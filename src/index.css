@@ -1,15 +1,137 @@
 @import-normalize; /* bring in normalize.css styles */
 
+html {
+  box-sizing: border-box;
+}
+
+*,
+*::after,
+*::before {
+  box-sizing: inherit;
+}
+
 body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  background-color: white;
+  background-repeat: repeat-y;
+  background-size: cover;
+  background-position: 0 0;
+}
+#root {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+body.modal-open {
+  width: 100%;
+  overflow-y: hidden;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: 'Roboto', sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+}
+
+ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  background-size: cover;
+}
+
+button {
+  font-family: 'Roboto';
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 140.4%;
+  color: #202020;
+  cursor: pointer;
+}
+
+address {
+  font-style: normal;
+}
+
+::placeholder {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.14;
+  letter-spacing: 0.01em;
+
+  color: #7f8e9d;
+}
+
+.container {
+  width: 320px;
+  margin: 0 auto;
+  padding: 0px 15px 0px 15px;
+}
+@media screen and (min-width: 390px) {
+  .container {
+    width: 390px;
+  }
+}
+@media screen and (min-width: 744px) {
+  .container {
+    width: 744px;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .container {
+    width: 1280px;
+  }
+}
+.main {
+  height: 100%;
+}
+
+.visually-title {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  border: 0;
+  padding: 0;
+  white-space: nowrap;
+  clip-path: inset(100%);
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+}
+.ck.ck-block-toolbar-button {
+  transform: translateX(5px);
 }
