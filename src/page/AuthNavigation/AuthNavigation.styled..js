@@ -28,6 +28,9 @@ export const LeftBlock = styled.div`
   justify-content: space-between;
   align-items: center;
   text-align: center;
+  @media screen and (min-width: 744px) {
+    height: 340px;
+  }
   @media screen and (min-width: 1280px) {
     padding: 36px 57px 100px 57px;
     width: 635px;

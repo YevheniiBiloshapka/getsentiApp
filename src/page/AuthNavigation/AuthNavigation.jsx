@@ -12,7 +12,10 @@ const AuthNavigation = () => {
       <LeftBlock>
         <Logo />
         <Description>
-          <h1>Monitor App Reviews & Ratings</h1>
+          <h1>
+            Monitor App <br />
+            Reviews & Ratings
+          </h1>
           <p>
             Senti saves teams hours every week with powerful integrations and
             automations.

@@ -24,12 +24,14 @@ const Forgot = () => {
         sx={{
           my: 8,
           mx: 4,
+          width: '100%',
           display: 'flex',
           padding: '20px',
           margin: 'auto auto',
           flexDirection: 'column',
           alignItems: 'center',
           backgroundColor: 'white',
+          maxWidth: '390px',
         }}
       >
         <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
