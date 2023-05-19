@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/getsentiApp/static/css/main.c4ada27b.css",
-    "main.js": "/getsentiApp/static/js/main.59df32f1.js",
+    "main.js": "/getsentiApp/static/js/main.76575639.js",
     "static/media/authImage.png": "/getsentiApp/static/media/authImage.48cf8a57560c460727b1.png",
     "static/media/imgSearch.png": "/getsentiApp/static/media/imgSearch.1ab9d9aa07c500d8734f.png",
     "static/media/logo.svg": "/getsentiApp/static/media/logo.308db972d4ac9b7520736861ab629951.svg",
     "static/media/logoHeader.svg": "/getsentiApp/static/media/logoHeader.ef1aae908c97771fb7293ea8230cb441.svg",
     "index.html": "/getsentiApp/index.html",
     "main.c4ada27b.css.map": "/getsentiApp/static/css/main.c4ada27b.css.map",
-    "main.59df32f1.js.map": "/getsentiApp/static/js/main.59df32f1.js.map"
+    "main.76575639.js.map": "/getsentiApp/static/js/main.76575639.js.map"
   },
   "entrypoints": [
     "static/css/main.c4ada27b.css",
-    "static/js/main.59df32f1.js"
+    "static/js/main.76575639.js"
   ]
 }
