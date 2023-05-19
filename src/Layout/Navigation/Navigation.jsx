@@ -10,7 +10,7 @@ import {
   List,
   ListItem,
 } from './Navigation.styled';
-import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { Spiner } from 'components/Spiner/spiner';
 
 const Navigation = () => {
@@ -30,7 +30,9 @@ const Navigation = () => {
     <>
       <Header>
         <Container className="container">
-          <Logo />
+          <Link to="/">
+            <Logo />
+          </Link>
           <nav>
             <List>
               <li>

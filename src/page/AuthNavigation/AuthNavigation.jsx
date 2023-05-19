@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 import { Suspense } from 'react';
 import {
   Description,
@@ -12,7 +12,9 @@ const AuthNavigation = () => {
   return (
     <Wrapper>
       <LeftBlock>
-        <Logo />
+        <Link to="/">
+          <Logo />
+        </Link>
         <Description>
           <h1>
             Monitor App <br />
