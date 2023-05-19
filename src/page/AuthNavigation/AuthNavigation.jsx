@@ -1,10 +1,12 @@
+import { Outlet } from 'react-router-dom';
+import { Suspense } from 'react';
 import {
   Description,
   Wrapper,
   LeftBlock,
   Logo,
 } from './AuthNavigation.styled.';
-import { Outlet } from 'react-router-dom';
+import { Spiner } from 'components/Spiner/spiner';
 
 const AuthNavigation = () => {
   return (
@@ -22,7 +24,9 @@ const AuthNavigation = () => {
           </p>
         </Description>
       </LeftBlock>
-      <Outlet />
+      <Suspense fallback={<Spiner styled={{ margin: 'auto auto' }} />}>
+        <Outlet />
+      </Suspense>
     </Wrapper>
   );
 };
