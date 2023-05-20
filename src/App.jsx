@@ -10,6 +10,7 @@ import Forgot from 'page/AuthNavigation/Forgot/Forgot';
 import PasswordChange from 'page/AuthNavigation/PasswordChange/PasswordChange';
 import Navigation from 'Layout/Navigation/Navigation';
 import Search from 'page/Search/Search';
+import AppInfoDetailed from 'page/AppInfoDetailed/AppInfoDetailed';
 
 export const App = () => {
   const dispatch = useDispatch();
@@ -33,7 +34,7 @@ export const App = () => {
           <Route index element={<Navigate to="/search" />} />
           <Route path="search" element={<Search />} />
           <Route path="history" element={<div>history</div>} />
-          <Route path="detailed" element={<div>detailed</div>} />
+          <Route path="detailed" element={<AppInfoDetailed />} />
         </Route>
       </Routes>
     </>
