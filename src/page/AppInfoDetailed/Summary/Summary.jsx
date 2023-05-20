@@ -13,9 +13,14 @@ import StarIcon from '@mui/icons-material/Star';
 import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied';
 import SentimentDissatisfiedIcon from '@mui/icons-material/SentimentDissatisfied';
 import MoodBadIcon from '@mui/icons-material/MoodBad';
+import { useEffect } from 'react';
 
 const Summary = () => {
   const [sentiment, setSentiment] = useState('good');
+
+  useEffect(() => {
+    setSentiment('good');
+  }, []);
 
   return (
     <SummaryBox>
