@@ -13,6 +13,11 @@ export const Container = styled.div`
 `;
 
 export const ChartBox = styled.div`
-  width: 356px;
-  height: 280px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
+  @media screen and (min-width: 744px) {
+    flex-direction: row;
+  }
 `;

@@ -1,0 +1,8 @@
+.bar-chart {
+}
+.bar-chart rect {
+  border-radius: 4px;
+
+  /* rx: 4px;
+  ry: 4px; */
+}

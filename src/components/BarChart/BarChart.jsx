@@ -1,5 +1,6 @@
 import React from 'react';
 import { Chart } from 'react-google-charts';
+import './bar-chart.css';
 
 export const data = [
   [
@@ -14,16 +15,29 @@ export const data = [
     },
   ],
   ['5', 60, '#0009D6', '60'],
-  ['4', 80, '##0009D6', '80'],
-  ['3', 30, '##0009D6', '30'],
-  ['2', 20, '##0009D6', '20'],
-  ['1', 5, '##0009D6', '5'],
+  ['4', 80, '#0009D6', '80'],
+  ['3', 30, '#0009D6', '30'],
+  ['2', 20, '#0009D6', '20'],
+  ['1', 5, '#0009D6', '5'],
 ];
 
 export const options = {
   width: 290,
   height: 140,
   backgroundColor: '#F5F7FB',
+  fontSize: 14,
+  hAxis: {
+    textPosition: 'none',
+    gridlines: {
+      color: 'transparent',
+    },
+  },
+  vAxis: {
+    gridlines: {
+      color: 'transparent',
+    },
+  },
+
   bar: {
     groupWidth: '95%',
     right: 0,

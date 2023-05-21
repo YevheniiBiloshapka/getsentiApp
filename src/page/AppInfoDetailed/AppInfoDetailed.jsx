@@ -5,7 +5,7 @@ import Analysis from './Analysis/Analysis';
 
 const AppInfoDetailed = () => {
   return (
-    <DetailedBox className="container">
+    <DetailedBox>
       <Summary />
       <Analysis />
     </DetailedBox>
