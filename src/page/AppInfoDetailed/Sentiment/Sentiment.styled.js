@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 export const Container = styled.div`
   padding-bottom: 40px;
+  pointer-events: none;
   & h2 {
     font-weight: 700;
     font-size: 24px;
