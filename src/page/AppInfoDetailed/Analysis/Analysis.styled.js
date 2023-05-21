@@ -24,7 +24,6 @@ export const Box = styled.div`
 
 export const ChartBox = styled.div`
   position: relative;
-  border: 1px solid;
   flex: 1;
   height: 400px;
   background: #edf5ff;
