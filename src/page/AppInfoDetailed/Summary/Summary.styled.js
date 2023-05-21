@@ -16,7 +16,8 @@ export const SummaryBox = styled.div`
 export const Container = styled.div`
   display: flex;
   padding: 20px;
-  background: #f5f7fb;
+  background: #edf5ff;
+  filter: drop-shadow(0px 0px 5px rgba(0, 9, 40, 0.2));
   position: relative;
   border-radius: 10px;
   justify-content: center;

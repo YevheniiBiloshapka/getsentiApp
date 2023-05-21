@@ -1,62 +1,52 @@
 import React from 'react';
-import { Chart } from 'react-google-charts';
-import './bar-chart.css';
+import { VictoryBar, VictoryChart, VictoryLabel, VictoryAxis } from 'victory';
+import { useMediaQuery } from 'react-responsive';
 
-export const data = [
-  [
-    'Element',
-    'Reviews',
-    { role: 'style' },
-    {
-      sourceColumn: 0,
-      role: 'annotation',
-      type: 'string',
-      calc: 'stringify',
-    },
-  ],
-  ['5', 60, '#0009D6', '60'],
-  ['4', 80, '#0009D6', '80'],
-  ['3', 30, '#0009D6', '30'],
-  ['2', 20, '#0009D6', '20'],
-  ['1', 5, '#0009D6', '5'],
-];
-
-export const options = {
-  width: 290,
-  height: 140,
-  backgroundColor: '#F5F7FB',
-  fontSize: 14,
-  hAxis: {
-    textPosition: 'none',
-    gridlines: {
-      color: 'transparent',
-    },
-  },
-  vAxis: {
-    gridlines: {
-      color: 'transparent',
-    },
-  },
-
-  bar: {
-    groupWidth: '95%',
-    right: 0,
-  },
-  legend: { position: 'none' },
+const axisStyle = {
+  data: { fill: '#0009D6', width: 20 },
 };
-const BarChart = () => {
+const labelStyle = {
+  fill: '#0009D6', // Изменение цвета нижних лейблов
+  fontWeight: '800', // Добавление жирного стиля к нижним лейблам
+};
+
+const BarChart = ({ starsBreakdown }) => {
+  const isMobile = useMediaQuery({ maxWidth: 743 });
+  const isTablet = useMediaQuery({ minWidth: 744, maxWidth: 1279 });
+
+  const chartWidth = isMobile ? 300 : isTablet ? 300 : 300;
+  const chartHeight = isMobile ? 220 : isTablet ? 220 : 220;
+  const data = convertStarsBreakdown(starsBreakdown);
   return (
-    <Chart
-      chartType="BarChart"
-      className="bar-chart"
-      backgroundColor="red"
-      width={290}
-      height={140}
-      position="absolute"
-      data={data}
-      options={options}
-    />
+    <div>
+      <VictoryChart
+        height={chartHeight}
+        width={chartWidth}
+        domainPadding={{ x: 10, y: 50 }}
+        dependentAxis
+      >
+        <VictoryAxis style={{ axisLabel: { fill: 'none' } }} />
+        <VictoryBar
+          horizontal
+          style={axisStyle}
+          labels={({ datum }) => datum.y}
+          labelComponent={<VictoryLabel style={labelStyle} />}
+          cornerRadius={5}
+          data={data}
+        />
+      </VictoryChart>
+    </div>
   );
 };
+
+function convertStarsBreakdown(starsBreakdown) {
+  const data = [];
+  for (const key in starsBreakdown) {
+    const x = parseInt(key);
+    const y = starsBreakdown[key];
+    data.push({ x, y });
+  }
+  return data;
+}
 
 export default BarChart;

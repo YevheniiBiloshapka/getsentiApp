@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Container,
   TotalReviews,
@@ -7,20 +7,18 @@ import {
   Graphic,
   SummaryBox,
 } from './Summary.styled';
-import { SvgIcon } from '@mui/material';
+import { Rating } from '@mui/material';
 import BarChart from 'components/BarChart/BarChart';
-import StarIcon from '@mui/icons-material/Star';
-import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied';
-import SentimentDissatisfiedIcon from '@mui/icons-material/SentimentDissatisfied';
-import MoodBadIcon from '@mui/icons-material/MoodBad';
-import { useEffect } from 'react';
 
-const Summary = () => {
-  const [sentiment, setSentiment] = useState('good');
+import getSentiment from './getSentiment';
 
-  useEffect(() => {
-    setSentiment('good');
-  }, []);
+const Summary = ({
+  totalReviews,
+  overallSentiment,
+  averageStars,
+  starsBreakdown,
+}) => {
+  const sentimentIcon = getSentiment(overallSentiment);
 
   return (
     <SummaryBox>
@@ -28,32 +26,19 @@ const Summary = () => {
       <Container>
         <TotalReviews>
           <h3>Total Reviews</h3>
-          <p>12,345</p>
+          <p>{totalReviews}</p>
         </TotalReviews>
         <Overall>
           <h3>Overall Sentiment</h3>
-
-          {sentiment === 'good' && (
-            <SvgIcon className="good" component={SentimentVerySatisfiedIcon} />
-          )}
-          {sentiment === 'normal' && (
-            <SvgIcon className="normal" component={SentimentDissatisfiedIcon} />
-          )}
-          {sentiment === 'bad' && (
-            <SvgIcon className="bad" component={MoodBadIcon} />
-          )}
+          {sentimentIcon}
         </Overall>
         <Average>
           <h3>Average Ratings</h3>
-          <p>
-            4.1
-            <span>
-              <SvgIcon component={StarIcon} inheritViewBox />
-            </span>
-          </p>
+          <p>{averageStars}</p>
+          <Rating name="simple-controlled" readOnly value={averageStars} />
         </Average>
         <Graphic>
-          <BarChart />
+          <BarChart starsBreakdown={starsBreakdown} />
         </Graphic>
       </Container>
     </SummaryBox>
