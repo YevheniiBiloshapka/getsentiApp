@@ -33,7 +33,6 @@ const SentimentColumnChart = ({ sentimentTimeseries }) => {
     });
   };
   const dataset = transformData(sentimentTimeseries);
-  // const initialDomain = { x: [0, 3.9] };
   const handleZoom = domain => {
     setZoomDomain(domain);
   };
