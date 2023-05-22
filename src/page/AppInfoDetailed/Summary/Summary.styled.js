@@ -11,7 +11,6 @@ export const SummaryBox = styled.div`
     color: #080a43;
     margin-bottom: 20px;
   }
-  pointer-events: none;
 `;
 
 export const Container = styled.div`
@@ -19,6 +18,7 @@ export const Container = styled.div`
   padding: 20px;
   background: #edf5ff;
   filter: drop-shadow(0px 0px 5px rgba(0, 9, 40, 0.2));
+  border: 1px solid #dedff2;
   position: relative;
   border-radius: 10px;
   justify-content: center;

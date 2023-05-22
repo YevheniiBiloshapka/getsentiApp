@@ -9,7 +9,6 @@ export const Container = styled.div`
     text-transform: capitalize;
 
     color: #080a43;
-    margin-bottom: 20px;
   }
 `;
 
@@ -17,5 +16,13 @@ export const ChartBox = styled.div`
   background: #edf5ff;
   filter: drop-shadow(0px 0px 5px rgba(0, 9, 40, 0.2));
   border-radius: 10px;
+  border: 1px solid #dedff2;
+`;
+
+export const Title = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px;
   border: 1px solid #dedff2;
 `;

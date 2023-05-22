@@ -10,7 +10,6 @@ export const Container = styled.div`
     color: #080a43;
     margin-bottom: 20px;
   }
-  pointer-events: none;
 `;
 
 export const Box = styled.div`
@@ -29,6 +28,7 @@ export const ChartBox = styled.div`
   height: 400px;
   background: #edf5ff;
   border-radius: 10px;
+  border: 1px solid #dedff2;
   filter: drop-shadow(0px 0px 8px rgba(3, 29, 124, 0.15));
 
   & h3 {

@@ -19,6 +19,7 @@ const SentimentColumnChart = ({ sentimentTimeseries }) => {
 
   const chartWidth = isMobile ? 320 : isTablet ? 600 : 800;
   const chartHeight = isMobile ? 320 : isTablet ? 300 : 300;
+  );
 
   const transformData = dataset => {
     const keys = Object.keys(dataset[0]).filter(key => key !== 'date');
@@ -31,12 +32,6 @@ const SentimentColumnChart = ({ sentimentTimeseries }) => {
   };
   const dataset = transformData(sentimentTimeseries);
   // const initialDomain = { x: [0, 3.9] };
-  const initialDomain = isMobile
-    ? { x: [0, 3.9] }
-    : isTablet
-    ? { x: [0, 6.9] }
-    : { x: [0, 8.9] };
-  const [zoomDomain, setZoomDomain] = useState(initialDomain);
   const handleZoom = domain => {
     setZoomDomain(domain);
   };
