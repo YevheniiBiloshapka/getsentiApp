@@ -1,21 +1,43 @@
 import * as React from 'react';
-
-import { Avatar, Button, TextField, Box } from '@mui/material';
-
+import {
+  Avatar,
+  Button,
+  TextField,
+  Box,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { changePassword } from 'api/registerUser';
+import { useNavigate } from 'react-router-dom';
+
 const defaultTheme = createTheme();
 
 const PasswordChange = () => {
+  const navigate = useNavigate();
+  const [openDialog, setOpenDialog] = React.useState(false);
+
   const handleSubmit = event => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    const body = { old_password: data.get('old_password'), new_password: data.get('new_password') };
+
+    changePassword(body)
+      .then(() => {
+        setOpenDialog(true);
+      })
+      .catch(error => console.log(error.response.data));
   };
+
+  const handleDialogClose = () => {
+    setOpenDialog(false);
+    navigate('/');
+  };
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <Box
@@ -42,32 +64,36 @@ const PasswordChange = () => {
             margin="normal"
             required
             fullWidth
-            name="new-password"
-            label="New Password"
+            name="old_password"
+            label="Old password"
             type="password"
-            id="new-password"
+            id="old_password"
             autoComplete="current-password"
           />
           <TextField
             margin="normal"
             required
             fullWidth
-            name="password-confirm"
-            label="Password confirmation"
+            name="new_password"
+            label="New password"
             type="password"
-            id="password-confirm"
+            id="new_password"
             autoComplete="current-password"
           />
 
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
+          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
             Change password
           </Button>
         </Box>
+        <Dialog open={openDialog} onClose={handleDialogClose}>
+          <DialogTitle>Success</DialogTitle>
+          <DialogContent>
+            <Typography>Password has been changed successfully!</Typography>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleDialogClose}>OK</Button>
+          </DialogActions>
+        </Dialog>
       </Box>
     </ThemeProvider>
   );

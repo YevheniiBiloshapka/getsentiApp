@@ -145,6 +145,7 @@ const FilterComponent = () => {
       </FormControl>
 
       <Button
+        sx={{ width: '100%' }}
         variant="contained"
         color="primary"
         size="medium"

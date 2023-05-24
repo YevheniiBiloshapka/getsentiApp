@@ -1,29 +1,42 @@
 import * as React from 'react';
-import { useDispatch } from 'react-redux';
-import { login } from 'redux/auth/auth-operation';
-import { Avatar, Button, TextField, Link, Box, Grid } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import { login } from 'api/redux/auth/auth-operation';
+import { Avatar, Button, TextField, Link, Box, Grid, Snackbar } from '@mui/material';
+import MuiAlert from '@mui/material/Alert';
 
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 const defaultTheme = createTheme();
 
 const LoginIn = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const auth = useSelector(state => state.auth);
+  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    if (auth.loggedIn) {
+      setOpen(true);
+      navigate('/');
+    }
+  }, [auth.loggedIn, navigate]);
 
-  const handleSubmit = event => {
+  const handleSubmit = async event => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
     const userData = {
       email: data.get('email'),
       password: data.get('password'),
     };
-    dispatch(login({ userData }));
+    dispatch(login(userData));
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   return (
@@ -69,12 +82,7 @@ const LoginIn = () => {
             autoComplete="current-password"
           />
 
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
+          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
             Sign In
           </Button>
           <Grid container>
@@ -90,6 +98,11 @@ const LoginIn = () => {
             </Grid>
           </Grid>
         </Box>
+        <Snackbar open={open} autoHideDuration={4000} onClose={handleClose}>
+          <MuiAlert onClose={handleClose} severity="success">
+            Logged in successfully!
+          </MuiAlert>
+        </Snackbar>
       </Box>
     </ThemeProvider>
   );

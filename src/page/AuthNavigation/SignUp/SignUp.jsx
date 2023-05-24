@@ -1,32 +1,60 @@
 import * as React from 'react';
-
-import { Avatar, Button, TextField, Link, Box, Grid } from '@mui/material';
+import {
+  Avatar,
+  Button,
+  TextField,
+  Link,
+  Box,
+  Grid,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
-import { useDispatch } from 'react-redux';
-import { register } from 'redux/auth/auth-operation';
+import { registerUser } from 'api/registerUser';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const defaultTheme = createTheme();
 
 const SignUp = () => {
-  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [openDialog, setOpenDialog] = useState(false);
+  const [message, setMessage] = useState('');
+  const [severity, setSeverity] = useState('success');
 
-  const handleSubmit = event => {
+  const handleDialogClose = () => {
+    setOpenDialog(false);
+    if (severity === 'success') {
+      navigate('/auth/login');
+    }
+  };
+
+  const handleSubmit = async event => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
     const userData = {
       email: data.get('email'),
       password: data.get('password'),
-      name: 'Antoshka',
+      password_confirm: data.get('password_confirm'),
     };
-    dispatch(register({ userData }));
+
+    registerUser(userData)
+      .then(res => {
+        setMessage('An email has been sent to your inbox. Please check your email.');
+        setSeverity('success');
+        setOpenDialog(true);
+      })
+      .catch(error => {
+        setSeverity('error');
+        setMessage(error.response.data.email);
+        setOpenDialog(true);
+      });
   };
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <Box
@@ -75,20 +103,15 @@ const SignUp = () => {
               <TextField
                 required
                 fullWidth
-                name="сonfirm"
+                name="password_confirm"
                 label="Confirm the password"
                 type="password"
-                id="password"
-                autoComplete="confirm-password"
+                id="password_confirm"
+                autoComplete="password_confirm"
               />
             </Grid>
           </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
+          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
             Sign Up
           </Button>
           <Grid container justifyContent="flex-end">
@@ -99,8 +122,18 @@ const SignUp = () => {
             </Grid>
           </Grid>
         </Box>
+        <Dialog open={openDialog} onClose={handleDialogClose}>
+          <DialogTitle>Success</DialogTitle>
+          <DialogContent>
+            <Typography>{message}</Typography>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleDialogClose}>OK</Button>
+          </DialogActions>
+        </Dialog>
       </Box>
     </ThemeProvider>
   );
 };
+
 export default SignUp;

@@ -4,15 +4,19 @@ import { Contain, Image, FormBox, Form } from './Hero.styled';
 import { TextField, Button, InputAdornment } from '@mui/material';
 import LinkIcon from '@mui/icons-material/Link';
 import { NavLink } from 'react-router-dom';
+import { fetchAppUrl } from 'api/Applications/Applications';
 
-const Hero = ({ setUrl }) => {
+const Hero = ({ setOpenModal, setAppId }) => {
   const handleSubmit = event => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    // console.log({
-    //   url: data.get('url'),
-    // });
-    setUrl(data.get('url'));
+    const body = {
+      url: data.get('url'),
+    };
+    fetchAppUrl(body).then(res => {
+      setAppId(res.id);
+      setOpenModal(res.is_new);
+    });
   };
 
   const isToken = false;
@@ -25,7 +29,7 @@ const Hero = ({ setUrl }) => {
           Reviews & Ratings
         </h1>
 
-        <Form onSubmit={handleSubmit}>
+        <Form onSubmit={e => handleSubmit(e)}>
           <TextField
             margin="normal"
             fullWidth
@@ -59,10 +63,7 @@ const Hero = ({ setUrl }) => {
             </Button>
           )}
         </Form>
-        <p>
-          Senti saves teams hours every week with powerful integrations and
-          automations.
-        </p>
+        <p>Senti saves teams hours every week with powerful integrations and automations.</p>
       </FormBox>
     </Contain>
   );
