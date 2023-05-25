@@ -1,58 +1,41 @@
 import React, { useState, useEffect } from 'react';
-import { DetailedBox } from './AppInfoDetailed.styled';
-import Summary from './Summary/Summary';
-import Analysis from './Analysis/Analysis';
-import Sentiment from './Sentiment/Sentiment';
-import RatingsOverTime from 'page/AppInfoDetailed/RatingsOverTime/RatingsOverTime';
-import FilterComponent from './FilterComponent/FilterComponent';
+import { DetailedBox, TitleBox } from './AppInfoDetailed.styled';
 import WaitLoaderBlock from 'page/Search/Hero/WaitLoaderBlock/WaitLoaderBlock';
+import { Summary, Analysis, Sentiment, RatingsOverTime, FilterComponent } from './index';
+import { Dialog, Button, IconButton, Tooltip } from '@mui/material';
+import UpdateIcon from '@mui/icons-material/Update';
 import { Spiner } from 'components/Spiner/spiner';
 import { fetchApplications, fetchAnalytics } from 'api/Applications/Applications';
-import Dialog from '@mui/material/Dialog';
-import Button from '@mui/material/Button';
+import response from './response.json';
+import { useSearchParams } from 'react-router-dom';
 
-const AppInfoDetailed = ({ appId }) => {
-  const [data, setData] = useState(null);
-  const [title, setTitle] = useState(null);
-  const [id, setId] = useState(null);
+const AppInfoDetailed = () => {
+  const [searchParams] = useSearchParams();
+  const [data, setData] = useState(null || response);
+  const [title, setTitle] = useState('app');
+  const [id, setId] = useState(searchParams.get('id') || null);
   const [loader, setLoader] = useState(false);
   const [dataNotFound, setDataNotFound] = useState(false);
 
   useEffect(() => {
-    if (appId) {
-      fetchApplications(appId).then(res => {
-        console.log(res);
+    if (id) {
+      fetchApplications(id).then(res => {
+        // console.log(res);
         setTitle(res.name);
         setId(res.id);
       });
     }
-  }, [appId]);
-
-  const fetchData = async () => {
-    if (id) {
-      setLoader(true);
-      try {
-        const res = await fetchAnalytics(id);
-        console.log(res);
-        if (isDataEmpty(res)) {
-          setData(null);
-          setDataNotFound(true);
-        } else {
-          setData(res);
-          if (!isDataUnchanged(res)) {
-            setTimeout(fetchData, 15000);
-          }
-        }
-      } catch (error) {
-        console.error(error);
-        setDataNotFound(true);
-      }
-      setLoader(false);
-    }
-  };
+  }, [id]);
 
   useEffect(() => {
-    fetchData();
+    if (id) {
+      setLoader(true);
+      fetchAnalytics(id).then(res => {
+        console.log(res);
+        setData(res);
+        setLoader(false);
+      });
+    }
   }, [id]);
 
   const handleSubmitFilter = async data => {
@@ -64,85 +47,28 @@ const AppInfoDetailed = ({ appId }) => {
       date_range_after: data.dateFrom,
       date_range_before: data.dateTo,
     };
-    if (id) {
-      setLoader(true);
-      try {
-        const res = await fetchAnalytics(id, body);
-        console.log(res);
-        if (isDataEmpty(res)) {
-          setData(null);
-          setDataNotFound(true);
-        } else {
-          setData(res);
-          if (!isDataUnchanged(res)) {
-            setTimeout(fetchData, 15000);
-          }
-        }
-      } catch (error) {
-        console.error(error);
-        setDataNotFound(true);
-      }
+    fetchAnalytics(id, body).then(res => {
+      setData(res);
       setLoader(false);
-    }
+    });
   };
 
   const handleReloadPage = () => {
     setDataNotFound(false);
   };
 
-  const isDataEmpty = response => {
-    const {
-      total_review_count,
-      overall_sentiment,
-      average_stars,
-      stars_breakdown,
-      sentiment_breakdown,
-      sentiment_timeseries,
-      stars_timeseries,
-      review_timeseries,
-    } = response;
-
-    return (
-      total_review_count === 0 &&
-      overall_sentiment === 0 &&
-      average_stars === 0 &&
-      Object.values(stars_breakdown).every(value => value === 0) &&
-      Object.values(sentiment_breakdown).every(value => value === 0) &&
-      sentiment_timeseries.length === 0 &&
-      stars_timeseries.length === 0 &&
-      review_timeseries.length === 0
-    );
-  };
-
-  const isDataUnchanged = response => {
-    const {
-      total_review_count,
-      overall_sentiment,
-      average_stars,
-      stars_breakdown,
-      sentiment_breakdown,
-      sentiment_timeseries,
-      stars_timeseries,
-      review_timeseries,
-    } = response;
-
-    return (
-      total_review_count === 0 &&
-      overall_sentiment === 0 &&
-      average_stars === 0 &&
-      Object.values(stars_breakdown).every(value => value === 0) &&
-      Object.values(sentiment_breakdown).every(value => value === 0) &&
-      sentiment_timeseries.length === 0 &&
-      stars_timeseries.length === 0 &&
-      review_timeseries.length === 0
-    );
-  };
-
   return (
     <DetailedBox>
-      {title && (
+      {id && title && (
         <>
-          <h2 className="detailed-box__title">{title}</h2>
+          <TitleBox>
+            <h2 className="detailed-box__title">{title}</h2>
+            <Tooltip title="Update Data">
+              <IconButton color="primary">
+                <UpdateIcon />
+              </IconButton>
+            </Tooltip>
+          </TitleBox>
           <FilterComponent onFilter={handleSubmitFilter} />
 
           {data ? (

@@ -10,3 +10,9 @@ export const DetailedBox = styled.div`
     margin-bottom: 30px;
   }
 `;
+
+export const TitleBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;

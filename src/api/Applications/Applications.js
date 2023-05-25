@@ -27,10 +27,10 @@ export async function fetchAnalytics(id, params) {
     return console.log(error);
   }
 }
-export async function fetchRecentSearches(params) {
+export async function fetchRecentSearches() {
   try {
-    const response = await axios.get(`/api/applications/recent-searches/`, params);
-    return response;
+    const response = await axios.get(`/api/applications/recent-searches/`);
+    return response.data;
   } catch (error) {
     return console.log(error);
   }

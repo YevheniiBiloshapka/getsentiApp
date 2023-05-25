@@ -1,23 +1,11 @@
 import React from 'react';
-import {
-  Container,
-  TotalReviews,
-  Overall,
-  Average,
-  Graphic,
-  SummaryBox,
-} from './Summary.styled';
+import { Container, TotalReviews, Overall, Average, Graphic, SummaryBox } from './Summary.styled';
 import { Rating } from '@mui/material';
 import BarChart from 'components/BarChart/BarChart';
 
 import getSentiment from './getSentiment';
 
-const Summary = ({
-  totalReviews,
-  overallSentiment,
-  averageStars,
-  starsBreakdown,
-}) => {
+const Summary = ({ totalReviews, overallSentiment, averageStars, starsBreakdown }) => {
   const sentimentIcon = getSentiment(overallSentiment);
 
   return (
@@ -45,4 +33,4 @@ const Summary = ({
   );
 };
 
-export default Summary;
+export { Summary };

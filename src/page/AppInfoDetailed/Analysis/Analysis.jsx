@@ -22,4 +22,4 @@ const Analysis = ({ sentimentBreakdown }) => {
   );
 };
 
-export default Analysis;
+export { Analysis };

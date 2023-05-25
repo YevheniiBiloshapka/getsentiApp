@@ -12,7 +12,7 @@ import {
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { changePassword } from 'api/registerUser';
+import { changePassword } from 'api/AuthenticationAPI';
 import { useNavigate } from 'react-router-dom';
 
 const defaultTheme = createTheme();

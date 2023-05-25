@@ -5,8 +5,14 @@ import { TextField, Button, InputAdornment } from '@mui/material';
 import LinkIcon from '@mui/icons-material/Link';
 import { NavLink } from 'react-router-dom';
 import { fetchAppUrl } from 'api/Applications/Applications';
+import { useSearchParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { selectorToken } from 'api/redux/auth/auth-selector';
 
-const Hero = ({ setOpenModal, setAppId }) => {
+const Hero = ({ setOpenModal }) => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const isToken = useSelector(selectorToken);
+
   const handleSubmit = event => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -14,12 +20,12 @@ const Hero = ({ setOpenModal, setAppId }) => {
       url: data.get('url'),
     };
     fetchAppUrl(body).then(res => {
-      setAppId(res.id);
+      setSearchParams({ id: res.id });
       setOpenModal(res.is_new);
     });
   };
+  console.log(searchParams.get('id'));
 
-  const isToken = false;
   return (
     <Contain>
       <Image src={imgSearch} alt="cover search" width="600px" heigth="600px" />

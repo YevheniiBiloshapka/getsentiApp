@@ -4,7 +4,6 @@ import Hero from './Hero/Hero';
 import AppInfoDetailed from 'page/AppInfoDetailed/AppInfoDetailed';
 
 const Search = () => {
-  const [appId, setAppId] = useState(null);
   const [openModal, setOpenModal] = useState(false);
 
   const handleClose = () => {
@@ -13,9 +12,9 @@ const Search = () => {
 
   return (
     <main className="container">
-      <Hero setAppId={setAppId} setOpenModal={setOpenModal} />
+      <Hero setOpenModal={setOpenModal} />
 
-      <AppInfoDetailed appId={appId} />
+      <AppInfoDetailed />
 
       <Dialog open={openModal} keepMounted onClose={handleClose}>
         <DialogTitle>Request Processing</DialogTitle>

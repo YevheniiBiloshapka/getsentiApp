@@ -27,15 +27,11 @@ const RatingsOverTime = ({ starsTimeseries, reviewTimeseries }) => {
           </Select>
         </Title>
 
-        {selectedOption === 'count' && (
-          <RatingOverLineChart data={reviewTimeseries} />
-        )}
-        {selectedOption === 'stars' && (
-          <RatingOverLineChart data={starsTimeseries} />
-        )}
+        {selectedOption === 'count' && <RatingOverLineChart data={reviewTimeseries} />}
+        {selectedOption === 'stars' && <RatingOverLineChart data={starsTimeseries} />}
       </ChartBox>
     </Container>
   );
 };
 
-export default RatingsOverTime;
+export { RatingsOverTime };

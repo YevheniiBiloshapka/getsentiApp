@@ -35,8 +35,9 @@ const SentimentBreakdown = ({ sentimentBreakdown }) => {
         labels={({ datum }) => datum.y}
         labelComponent={<VictoryLabel style={labelStyle} />}
         cornerRadius={5}
-        data={[{ x: '😫', y: negative }]}
+        data={[{ x: '🙁', y: negative }]}
       />
+
       <VictoryBar
         horizontal
         style={{
@@ -48,7 +49,7 @@ const SentimentBreakdown = ({ sentimentBreakdown }) => {
         labels={({ datum }) => datum.y}
         labelComponent={<VictoryLabel style={labelStyle} />}
         cornerRadius={5}
-        data={[{ x: '😑', y: neutral }]}
+        data={[{ x: '😐', y: neutral }]}
       />
       <VictoryBar
         horizontal

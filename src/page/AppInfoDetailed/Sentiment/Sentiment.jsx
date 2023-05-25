@@ -13,4 +13,4 @@ const Sentiment = ({ sentimentTimeseries }) => {
   );
 };
 
-export default Sentiment;
+export { Sentiment };

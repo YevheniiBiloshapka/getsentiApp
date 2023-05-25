@@ -10,7 +10,7 @@ import {
   Box,
   TextField,
 } from '@mui/material';
-import { passwordResetConfirm } from 'api/registerUser';
+import { passwordResetConfirm } from 'api/AuthenticationAPI';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 
 const PasswordResetConfirm = () => {

@@ -3,6 +3,7 @@ import AuthNavigation from 'page/AuthNavigation/AuthNavigation';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { fetchCurrentUser } from 'api/redux/auth/auth-operation';
+import { PrivateRoute, PublicRoute } from 'hook/Route';
 
 // TODO:  Authentication
 import LoginIn from 'page/AuthNavigation/LogIn/LoginIn';
@@ -14,9 +15,9 @@ import PasswordResetConfirm from 'page/AuthNavigation/PasswordResetConfirm/Passw
 // TODO:  Page search history
 import Navigation from 'Layout/Navigation/Navigation';
 import Search from 'page/Search/Search';
-import AppInfoDetailed from 'page/AppInfoDetailed/AppInfoDetailed';
 import EmailConfirm from 'page/AuthNavigation/EmailConfirm/EmailConfirm';
-import { PrivateRoute, PublicRoute } from 'hook/Route';
+import History from 'page/History/History';
+import DetailedApp from 'page/DetailedApp/DetailedApp';
 
 export const App = () => {
   const dispatch = useDispatch();
@@ -27,7 +28,7 @@ export const App = () => {
 
   return (
     <>
-      {/* // ! авторизация */}
+      {/* // ! Authentication */}
       <Routes>
         <Route
           path="/auth"
@@ -88,6 +89,7 @@ export const App = () => {
             }
           />
         </Route>
+        {/* // !  Page search history */}
         <Route path="/" element={<Navigation />}>
           <Route index element={<Navigate to="/search" />} />
           <Route
@@ -102,15 +104,15 @@ export const App = () => {
             path="history"
             element={
               <PrivateRoute>
-                <div>history</div>
+                <History />
               </PrivateRoute>
             }
           />
           <Route
-            path="detailed"
+            path="history/detailed"
             element={
               <PrivateRoute>
-                <AppInfoDetailed />
+                <DetailedApp />
               </PrivateRoute>
             }
           />

@@ -9,7 +9,7 @@ import {
   Typography,
   Box,
 } from '@mui/material';
-import { emailConfirm } from 'api/registerUser';
+import { emailConfirm } from 'api/AuthenticationAPI';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 
 const EmailConfirm = () => {

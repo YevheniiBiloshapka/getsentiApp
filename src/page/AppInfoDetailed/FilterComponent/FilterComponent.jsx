@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Box, Button, FormControl, MenuItem, TextField } from '@mui/material';
 
-const FilterComponent = () => {
+const FilterComponent = ({ onFilter }) => {
   const [selectedStars, setSelectedStars] = useState([]);
   const [selectedSentiments, setSelectedSentiments] = useState([]);
   const [selectedMarkets, setSelectedMarkets] = useState([]);
@@ -9,23 +9,9 @@ const FilterComponent = () => {
   const [dateTo, setDateTo] = useState('');
 
   const handleStarsChange = event => {
-    setSelectedStars(event.target.value);
-  };
-
-  const handleSentimentsChange = event => {
-    setSelectedSentiments(event.target.value);
-  };
-
-  const handleMarketsChange = event => {
-    setSelectedMarkets(event.target.value);
-  };
-
-  const handleDateFromChange = event => {
-    setDateFrom(event.target.value);
-  };
-
-  const handleDateToChange = event => {
-    setDateTo(event.target.value);
+    const selectedValues = event.target.value;
+    const sortedValues = selectedValues.slice().sort((a, b) => b - a);
+    setSelectedStars(sortedValues);
   };
 
   const handleApply = () => {
@@ -36,9 +22,7 @@ const FilterComponent = () => {
       dateFrom: dateFrom,
       dateTo: dateTo,
     };
-
-    // Do something with the filterData object
-    console.log(filterData);
+    onFilter(filterData);
   };
 
   return (
@@ -69,7 +53,7 @@ const FilterComponent = () => {
             renderValue: selected => selected.join(', '),
           }}
         >
-          {['0', '1', '2', '3', '4', '5'].map(value => (
+          {[0, 1, 2, 3, 4, 5].map(value => (
             <MenuItem key={value} value={value}>
               {value}
             </MenuItem>
@@ -84,7 +68,7 @@ const FilterComponent = () => {
           size="small"
           label="Sentiments"
           value={selectedSentiments}
-          onChange={handleSentimentsChange}
+          onChange={event => setSelectedSentiments(event.target.value)}
           SelectProps={{
             multiple: true,
             displayEmpty: true,
@@ -104,7 +88,7 @@ const FilterComponent = () => {
           size="small"
           label="Markets"
           value={selectedMarkets}
-          onChange={handleMarketsChange}
+          onChange={event => setSelectedMarkets(event.target.value)}
           SelectProps={{
             multiple: true,
             displayEmpty: true,
@@ -123,7 +107,7 @@ const FilterComponent = () => {
           size="small"
           label="From"
           value={dateFrom}
-          onChange={handleDateFromChange}
+          onChange={event => setDateFrom(event.target.value)}
           InputLabelProps={{
             shrink: true,
           }}
@@ -137,7 +121,7 @@ const FilterComponent = () => {
           size="small"
           label="To"
           value={dateTo}
-          onChange={handleDateToChange}
+          onChange={event => setDateTo(event.target.value)}
           InputLabelProps={{
             shrink: true,
           }}
@@ -157,4 +141,4 @@ const FilterComponent = () => {
   );
 };
 
-export default FilterComponent;
+export { FilterComponent };
