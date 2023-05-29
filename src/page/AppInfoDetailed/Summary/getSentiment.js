@@ -5,7 +5,16 @@ import MoodBadIcon from '@mui/icons-material/MoodBad';
 
 function getSentiment(overallSentiment) {
   const range = 100 / 3;
-  const sentiment = Math.floor(overallSentiment / range);
+  let sentiment;
+
+   if (overallSentiment <  range) {
+        sentiment = 0;
+    } else if (overallSentiment < range * 2) {
+        sentiment = 1;
+    } else {
+        sentiment = 2;
+    }
+
 
   switch (sentiment) {
     case 0:

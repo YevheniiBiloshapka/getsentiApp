@@ -9,7 +9,7 @@ import { useSearchParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectorToken } from 'api/redux/auth/auth-selector';
 
-const Hero = ({ setOpenModal }) => {
+const Hero = ({ setOpenModal, idSetter }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const isToken = useSelector(selectorToken);
 
@@ -20,7 +20,9 @@ const Hero = ({ setOpenModal }) => {
       url: data.get('url'),
     };
     fetchAppUrl(body).then(res => {
+      console.log('fetch_app_url', res);
       setSearchParams({ id: res.id });
+      idSetter(res.id);
       setOpenModal(res.is_new);
     });
   };
@@ -28,7 +30,7 @@ const Hero = ({ setOpenModal }) => {
 
   return (
     <Contain>
-      <Image src={imgSearch} alt="cover search" width="600px" heigth="600px" />
+      <Image src={imgSearch} alt='cover search' width='600px' heigth='600px' />
       <FormBox>
         <h1>
           Analyse App <br />
@@ -37,37 +39,37 @@ const Hero = ({ setOpenModal }) => {
 
         <Form onSubmit={e => handleSubmit(e)}>
           <TextField
-            margin="normal"
+            margin='normal'
             fullWidth
-            name="url"
-            label="Enter the URL here"
-            type="url"
-            id="url"
+            name='url'
+            label='Enter the URL here'
+            type='url'
+            id='url'
             InputProps={{
               startAdornment: (
-                <InputAdornment position="start">
+                <InputAdornment position='start'>
                   <LinkIcon />
                 </InputAdornment>
               ),
             }}
           />
 
-          {!isToken && (
-            <Button type="submit" variant="contained" sx={{ mt: 2, mb: 1 }}>
-              analyses
-            </Button>
-          )}
-          {isToken && (
-            <Button
-              type="submit"
-              to={'/login'}
-              component={NavLink}
-              variant="contained"
-              sx={{ mt: 2, mb: 1 }}
-            >
-              analyse
-            </Button>
-          )}
+          {
+            isToken ?
+              <Button type='submit' variant='contained' sx={{ mt: 2, mb: 1 }}>
+                analyse
+              </Button>
+              : <Button
+                type='submit'
+                to={'/login'}
+                component={NavLink}
+                variant='contained'
+                sx={{ mt: 2, mb: 1 }}
+              >
+                analyse
+              </Button>
+          }
+
         </Form>
         <p>Senti saves teams hours every week with powerful integrations and automations.</p>
       </FormBox>

@@ -7,7 +7,7 @@ export const Container = styled.div`
     font-size: 24px;
     line-height: 140%;
     text-transform: capitalize;
-
+    margin-bottom: 20px;
     color: #080a43;
   }
 `;

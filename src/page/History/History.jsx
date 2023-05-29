@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import HistoryTable from './HistoryTable/HistoryTable';
 import { Main } from './History.styled';
-import response from './data.json';
 
 import { fetchRecentSearches } from 'api/Applications/Applications';
 import { Spiner } from 'components/Spiner/spiner';
@@ -12,15 +11,16 @@ const History = () => {
   useEffect(() => {
     fetchRecentSearches().then(res => {
       console.log(res);
-      setData(response);
+      setData(res);
     });
   }, []);
 
   return (
-    <Main className="container">
+    <Main className='container'>
       <h1>History</h1>
-      {data && <HistoryTable data={data} />}
-      {!data && <Spiner styled={{ margin: 'auto auto' }} />}
+      {data
+        ? <HistoryTable data={data} />
+        : <Spiner styled={{ margin: 'auto auto' }} />}
     </Main>
   );
 };

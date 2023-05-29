@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Container, TotalReviews, Overall, Average, Graphic, SummaryBox } from './Summary.styled';
 import { Rating } from '@mui/material';
 import BarChart from 'components/BarChart/BarChart';
 
 import getSentiment from './getSentiment';
+import Plot from 'react-plotly.js';
 
-const Summary = ({ totalReviews, overallSentiment, averageStars, starsBreakdown }) => {
-  const sentimentIcon = getSentiment(overallSentiment);
+
+const Summary = ({ totalReviews, overallSentimentNum, averageStars, starsBreakdown }) => {
+  const sentimentIcon = getSentiment(overallSentimentNum);
 
   return (
     <SummaryBox>
@@ -26,7 +28,13 @@ const Summary = ({ totalReviews, overallSentiment, averageStars, starsBreakdown 
           <Rating name="simple-controlled" readOnly value={averageStars} />
         </Average>
         <Graphic>
-          <BarChart starsBreakdown={starsBreakdown} />
+              <Plot
+              data={starsBreakdown.data}
+              layout={starsBreakdown.layout}
+              useResizeHandler={true}
+              style={{ width: '100%', height: '100%' }}
+
+          />
         </Graphic>
       </Container>
     </SummaryBox>

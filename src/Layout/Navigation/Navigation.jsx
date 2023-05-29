@@ -34,9 +34,11 @@ const Navigation = () => {
       await dispatch(logout());
       setAnchorEl(null);
       setOpenSnackbar(true);
+
     } catch (error) {
-      console.error('Error logging in:', error);
+      console.error('Error logging out:', error);
     }
+     navigate('/auth/login');
   };
 
   const handleCloseSnackbar = () => {

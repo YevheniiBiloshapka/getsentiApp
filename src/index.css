@@ -135,3 +135,7 @@ address {
 .ck.ck-block-toolbar-button {
   transform: translateX(5px);
 }
+
+.modebar-container {
+  display: none !important;
+}

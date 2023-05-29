@@ -5,16 +5,17 @@ import AppInfoDetailed from 'page/AppInfoDetailed/AppInfoDetailed';
 
 const Search = () => {
   const [openModal, setOpenModal] = useState(false);
+  const [appId, appIdSetter] =  useState(null);
 
   const handleClose = () => {
     setOpenModal(false);
   };
-
+  console.log('hit Search', appId)
   return (
     <main className="container">
-      <Hero setOpenModal={setOpenModal} />
+      <Hero setOpenModal={setOpenModal} idSetter={appIdSetter} />
 
-      <AppInfoDetailed />
+      <AppInfoDetailed appId={appId} />
 
       <Dialog open={openModal} keepMounted onClose={handleClose}>
         <DialogTitle>Request Processing</DialogTitle>

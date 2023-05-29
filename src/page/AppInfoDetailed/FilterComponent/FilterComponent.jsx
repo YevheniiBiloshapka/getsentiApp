@@ -16,11 +16,11 @@ const FilterComponent = ({ onFilter }) => {
 
   const handleApply = () => {
     const filterData = {
-      stars: selectedStars,
-      sentiments: selectedSentiments,
-      markets: selectedMarkets,
-      dateFrom: dateFrom,
-      dateTo: dateTo,
+      stars: selectedStars.join(','),
+      sentiment: selectedSentiments.map(sentiment => sentiment.toLowerCase()).join(','),
+      market: selectedMarkets.map(sentiment => sentiment.toLowerCase().replace(/ /g, "_")).join(','),
+      date_range_after: dateFrom,
+      date_range_before: dateTo,
     };
     onFilter(filterData);
   };
@@ -53,7 +53,7 @@ const FilterComponent = ({ onFilter }) => {
             renderValue: selected => selected.join(', '),
           }}
         >
-          {[0, 1, 2, 3, 4, 5].map(value => (
+          {[1, 2, 3, 4, 5].map(value => (
             <MenuItem key={value} value={value}>
               {value}
             </MenuItem>

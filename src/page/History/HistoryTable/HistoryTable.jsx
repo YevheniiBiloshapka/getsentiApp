@@ -24,16 +24,16 @@ const HistoryTable = ({ data }) => {
         </TableHead>
         <TableBody>
           {data.map(item => (
-            <TableRowHover key={item.ulid}>
+            <TableRowHover key={item.id}>
               <TableCellHover sx={{ fontWeight: '500', color: '#080A43' }}>
                 {item.name}
               </TableCellHover>
               <TableCellHover align="right">
-                {item.status === 'processed' ? (
+                {item.status === 'done' ? (
                   <Tooltip title="Application processed" arrow>
                     <CheckIcon color="success" />
                   </Tooltip>
-                ) : item.status === 'update' ? (
+                ) : item.status === 'updating' ? (
                   <Tooltip title="Application update in progress" arrow>
                     <UpdateIcon color="warning" />
                   </Tooltip>
@@ -42,7 +42,7 @@ const HistoryTable = ({ data }) => {
               <TableCellHover align="right">
                 <Tooltip title="Go to detailed page" arrow>
                   <Link
-                    to={`/history/detailed?id=${item.ulid}`}
+                    to={`/history/detailed?id=${item.id}`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >

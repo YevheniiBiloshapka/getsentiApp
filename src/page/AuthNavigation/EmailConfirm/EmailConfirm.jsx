@@ -21,7 +21,7 @@ const EmailConfirm = () => {
     setOpenDialog(false);
     navigate('/auth/login');
   };
-
+  console.log(token);
   useEffect(() => {
     const body = { token: token };
     emailConfirm(body).then(res => {
