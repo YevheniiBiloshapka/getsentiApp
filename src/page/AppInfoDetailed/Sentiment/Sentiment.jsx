@@ -1,8 +1,6 @@
 import React from 'react';
 import { Container, ChartBox } from './Sentiment.styled';
-import SentimentColumnChart from 'components/SentimentColumnChart/SentimentColumnChart';
 import Plot from 'react-plotly.js';
-
 const Sentiment = ({ sentimentTimeseries }) => {
 
   return (

@@ -1,10 +1,8 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import { Container, TotalReviews, Overall, Average, Graphic, SummaryBox } from './Summary.styled';
 import { Rating } from '@mui/material';
-import BarChart from 'components/BarChart/BarChart';
-
-import getSentiment from './getSentiment';
 import Plot from 'react-plotly.js';
+import getSentiment from './getSentiment';
 
 
 const Summary = ({ totalReviews, overallSentimentNum, averageStars, starsBreakdown }) => {
