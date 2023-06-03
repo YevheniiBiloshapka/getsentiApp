@@ -28,13 +28,14 @@ const Summary = ({ totalReviews, overallSentimentNum, averageStars, starsBreakdo
           <Rating name="simple-controlled" readOnly value={averageStars} />
         </Average>
         <Graphic>
-              <Plot
-              data={starsBreakdown.data}
-              layout={starsBreakdown.layout}
-              useResizeHandler={true}
-              style={{ width: '100%', height: '100%' }}
+           <h3 style={{ 'margin-bottom': '0', 'margin-top': '0' }}>Stars breakdown</h3>
+          {starsBreakdown && <Plot
+            data={starsBreakdown.data}
+            layout={starsBreakdown.layout}
+            useResizeHandler={true}
+            style={{ width: '100%', height: '100%' }}
 
-          />
+          />}
         </Graphic>
       </Container>
     </SummaryBox>

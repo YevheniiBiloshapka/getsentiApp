@@ -14,21 +14,22 @@ export async function fetchAppUrl(body) {
 
 export async function fetchApplication(params) {
   try {
-    const response = await axios.get(`/api/applications/${params}`);
-    return response.data;
+    return await axios.get(`/api/applications/${params}`);;
   } catch (error) {
-    return console.error(error);
+    console.error(error);
+    return error.response; // return error response to handle it later
   }
 }
 
 export async function fetchAnalytics(id, params) {
   try {
-    const response = await axios.get(`/api/applications/${id}/analytics/`, {params: params});
-    return response.data;
+    return await axios.get(`/api/applications/${id}/analytics/`, {params: params});;
   } catch (error) {
-    return console.error(error);
+    console.error(error);
+    return error.response; // return error response to handle it later
   }
 }
+
 
 export async function fetchRecentSearches() {
   try {

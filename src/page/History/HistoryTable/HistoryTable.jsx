@@ -29,7 +29,7 @@ const HistoryTable = ({ data }) => {
                 {item.name}
               </TableCellHover>
               <TableCellHover align="right">
-                {item.status === 'done' ? (
+                {item.status === 'ready' ? (
                   <Tooltip title="Application processed" arrow>
                     <CheckIcon color="success" />
                   </Tooltip>

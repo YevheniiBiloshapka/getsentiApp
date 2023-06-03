@@ -11,35 +11,64 @@ import { useSearchParams } from 'react-router-dom';
 
 
 const AppInfoDetailed = ({ appId }) => {
+
   const [searchParams] = useSearchParams();
   const idFromQuery = searchParams.get('id');
 
   // Use appId prop if it's not null or undefined, otherwise use id from the query params
   const actualAppId = appId ?? idFromQuery;
-
+  console.log('in details', appId);
   const [appName, setAppName] = useState(null);
   const [analyticsData, setAnalyticsData] = useState(null);
   const [filters, setFilters] = useState({});
   const [isFetching, setIsFetching] = useState(false);
   const [isFirstLoad, setIsFirstLoad] = useState(true);
+  const [dataNotFound, setDataNotFound] = useState(false);
 
   useEffect(() => {
     if (actualAppId) {
-      fetchApplication(actualAppId).then(res => res && setAppName(res.name));
+      fetchApplication(actualAppId)
+        .then(res => {
+          if (res.status === 200) {
+            setAppName(res.data.name);
+          } else if (res.status === 404) {
+            setDataNotFound(true);
+          }
+        });
     }
   }, [actualAppId]);
 
   useEffect(() => {
     if (actualAppId) {
-      setIsFetching(true); // Set isFetching to true when beginning fetch
-      console.log('filters', filters);
+      setIsFetching(true);
       fetchAnalytics(actualAppId, filters)
-        .then(data => setAnalyticsData(data))
-        .finally(() => setIsFetching(false), setIsFirstLoad(false)); // Reset isFetching to false when fetch completes
+        .then(res => {
+          if (res.status === 200) {
+            setAnalyticsData(res.data);
+          } else if (res.status === 404) {
+            setDataNotFound(true);
+          }
+        })
+        .finally(() => {
+          setIsFetching(false);
+          setIsFirstLoad(false);
+        });
     }
   }, [actualAppId, filters]);
 
-  console.log('is_first_load', isFirstLoad)
+  const handleReloadPage = () => {
+    setDataNotFound(false);
+
+    // Update URL without triggering a navigation event
+    const url = new URL(window.location);
+    url.searchParams.delete('id');
+    window.history.replaceState(null, document.title, url.toString());
+
+    // Optionally reload the page
+    window.location.reload();
+  };
+
+  console.log('is_first_load', isFirstLoad);
 
   return (
     <DetailedBox>
@@ -64,26 +93,35 @@ const AppInfoDetailed = ({ appId }) => {
             {
               !analyticsData
                 ? <WaitLoaderBlock />
-                :  <>
-                    <Summary
-                      totalReviews={analyticsData.total_review_count}
-                      overallSentimentNum={analyticsData.overall_sentiment.value}
-                      averageStars={analyticsData.average_stars}
-                      starsBreakdown={JSON.parse(analyticsData.stars_breakdown)}
-                    />
-                    <Analysis
-                                            overallSentiment={JSON.parse(analyticsData.overall_sentiment.chart)}
+                : <>
+                  <Summary
+                    totalReviews={analyticsData.total_review_count}
+                    overallSentimentNum={analyticsData.overall_sentiment?.value}
+                    averageStars={analyticsData.average_stars}
+                    starsBreakdown={analyticsData.stars_breakdown ? JSON.parse(analyticsData.stars_breakdown) : null}
+                  />
+                  <Analysis
+                    overallSentiment={analyticsData.overall_sentiment?.chart ? JSON.parse(analyticsData.overall_sentiment?.chart) : null}
 
-                      sentimentBreakdown={JSON.parse(analyticsData.sentiment_breakdown)}
-                    />
-                    <Sentiment sentimentTimeseries={JSON.parse(analyticsData.sentiment_timeseries)} />
+                    sentimentBreakdown={analyticsData.sentiment_breakdown ? JSON.parse(analyticsData.sentiment_breakdown) : null}
+                  />
+                  <Sentiment
+                    sentimentTimeseries={analyticsData.sentiment_timeseries ? JSON.parse(analyticsData.sentiment_timeseries) : null} />
 
-                    <RatingsOverTime
-                      starsTimeseries={JSON.parse(analyticsData.stars_timeseries)}
-                      reviewTimeseries={JSON.parse(analyticsData.review_timeseries)}
-                    />
-                  </>
+                  <RatingsOverTime
+                    starsTimeseries={analyticsData.stars_timeseries ? JSON.parse(analyticsData.stars_timeseries) : null}
+                    reviewTimeseries={analyticsData.review_timeseries ? JSON.parse(analyticsData.review_timeseries) : null}
+                  />
+                </>
             }
+            <Dialog open={dataNotFound} onClose={handleReloadPage} sx={{ padding: '40px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', padding: '30px' }}>
+                Data not found. Please try again later.
+                <Button sx={{ mt: 2 }} onClick={handleReloadPage}>
+                  Close
+                </Button>
+              </div>
+            </Dialog>
           </>
         )
       }
@@ -163,14 +201,7 @@ const AppInfoDetailed = ({ appId }) => {
 //
 
 //       {loader && <WaitLoaderBlock />}
-//       <Dialog open={dataNotFound} onClose={handleReloadPage} sx={{ padding: '40px' }}>
-//         <div style={{ display: 'flex', flexDirection: 'column', padding: '30px' }}>
-//           Data not found. Please try again later.
-//           <Button sx={{ mt: 2 }} onClick={handleReloadPage}>
-//             Close
-//           </Button>
-//         </div>
-//       </Dialog>
+
 //     </DetailedBox>
 //   );
 // };

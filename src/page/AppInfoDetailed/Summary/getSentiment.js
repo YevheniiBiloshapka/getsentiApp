@@ -4,6 +4,11 @@ import SentimentDissatisfiedIcon from '@mui/icons-material/SentimentDissatisfied
 import MoodBadIcon from '@mui/icons-material/MoodBad';
 
 function getSentiment(overallSentiment) {
+  console.log('sentiment', overallSentiment);
+  if (overallSentiment === null || overallSentiment === undefined) {
+    return "Not measured";
+  }
+
   const range = 100 / 3;
   let sentiment;
 

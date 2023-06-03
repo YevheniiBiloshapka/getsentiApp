@@ -31,7 +31,7 @@ const RatingsOverTime = ({ starsTimeseries, reviewTimeseries }) => {
         </Title>
 
         {selectedOption === 'count' && (
-            <Plot
+            reviewTimeseries&& <Plot
             data={reviewTimeseries.data}
             layout={reviewTimeseries.layout}
             useResizeHandler={true}
@@ -39,7 +39,7 @@ const RatingsOverTime = ({ starsTimeseries, reviewTimeseries }) => {
           />
         )}
         {selectedOption === 'stars' && (
-         <Plot
+         starsTimeseries && <Plot
             data={starsTimeseries.data}
             layout={starsTimeseries.layout}
             useResizeHandler={true}

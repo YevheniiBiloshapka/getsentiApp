@@ -19,7 +19,7 @@ const History = () => {
     <Main className='container'>
       <h1>History</h1>
       {data
-        ? <HistoryTable data={data} />
+        ? data.length > 0 ? <HistoryTable data={data} />: <h3>Your search history is empty</h3>
         : <Spiner styled={{ margin: 'auto auto' }} />}
     </Main>
   );

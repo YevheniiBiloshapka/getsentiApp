@@ -10,21 +10,21 @@ const Analysis = ({ overallSentiment, sentimentBreakdown }) => {
       <Box>
         <ChartBox>
           <h3>Overall sentiment</h3>
-          <Plot
+          {overallSentiment && <Plot
             data={overallSentiment.data}
             layout={overallSentiment.layout}
             useResizeHandler={true}
             style={{ width: '100%', height: '100%' }}
-          />
+          />}
         </ChartBox>
         <ChartBox>
           <h3>Sentiment breakdown</h3>
-          <Plot
+          {sentimentBreakdown && <Plot
             data={sentimentBreakdown.data}
             layout={sentimentBreakdown.layout}
             useResizeHandler={true}
             style={{ width: '100%', height: '100%' }}
-          />
+          />}
         </ChartBox>
       </Box>
     </Container>
