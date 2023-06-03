@@ -4,7 +4,9 @@ import WaitLoaderBlock from 'page/Search/Hero/WaitLoaderBlock/WaitLoaderBlock';
 import { Summary, Analysis, Sentiment, RatingsOverTime, FilterComponent } from './index';
 import { Dialog, Button, IconButton, Tooltip } from '@mui/material';
 import UpdateIcon from '@mui/icons-material/Update';
+
 import { fetchApplication, fetchAnalytics } from 'api/Applications/Applications';
+
 import { useSearchParams } from 'react-router-dom';
 
 const AppInfoDetailed = ({ appId }) => {
