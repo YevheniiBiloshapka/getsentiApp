@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from 'api/redux/auth/auth-operation';
 import { useNavigate } from 'react-router-dom';
-import { object, string, TypeOf } from 'zod';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { object, string } from 'zod';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { Avatar, Button, TextField, Link, Box, Grid, Snackbar, MuiAlert } from '@mui/material';
+import { Avatar, Button, TextField, Link, Box, Grid, Snackbar } from '@mui/material';
+import MuiAlert from '@mui/material/Alert';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';

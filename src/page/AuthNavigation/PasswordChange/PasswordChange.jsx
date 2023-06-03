@@ -13,18 +13,34 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { changePassword } from 'api/AuthenticationAPI';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { object, string } from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+const schema = object({
+  old_password: string().nonempty('Enter your old password'),
+  new_password: string()
+    .nonempty('Enter your new password')
+    .min(8, 'Password must contain at least 8 characters'),
+});
 
 const defaultTheme = createTheme();
 
 const PasswordChange = () => {
   const navigate = useNavigate();
-  const [openDialog, setOpenDialog] = React.useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(schema),
+  });
 
-  const handleSubmit = event => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const body = { old_password: data.get('old_password'), new_password: data.get('new_password') };
+  const onSubmit = async data => {
+    const body = { old_password: data.old_password, new_password: data.new_password };
 
     changePassword(body)
       .then(() => {
@@ -59,7 +75,7 @@ const PasswordChange = () => {
         <Typography component="h1" variant="h5">
           Change Password
         </Typography>
-        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+        <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)} sx={{ mt: 1 }}>
           <TextField
             margin="normal"
             required
@@ -69,6 +85,9 @@ const PasswordChange = () => {
             type="password"
             id="old_password"
             autoComplete="current-password"
+            {...register('old_password')}
+            error={!!errors.old_password}
+            helperText={errors.old_password?.message}
           />
           <TextField
             margin="normal"
@@ -79,6 +98,9 @@ const PasswordChange = () => {
             type="password"
             id="new_password"
             autoComplete="current-password"
+            {...register('new_password')}
+            error={!!errors.new_password}
+            helperText={errors.new_password?.message}
           />
 
           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>

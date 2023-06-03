@@ -24,7 +24,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 const defaultTheme = createTheme();
 
 const emailSchema = object({
-  email: string().email('Электронная почта недействительна').nonempty('Введите электронный адрес'),
+  email: string().email('Email is invalid').nonempty('Enter your email address'),
 });
 
 const Forgot = () => {
