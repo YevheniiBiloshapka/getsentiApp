@@ -18,7 +18,6 @@ const AppInfoDetailed = ({ appId }) => {
   const [appName, setAppName] = useState(null);
   const [analyticsData, setAnalyticsData] = useState(null);
   const [filters, setFilters] = useState({});
-  const [isFirstLoad, setIsFirstLoad] = useState(true);
   const [dataNotFound, setDataNotFound] = useState(false);
 
   useEffect(() => {
@@ -43,9 +42,7 @@ const AppInfoDetailed = ({ appId }) => {
             setDataNotFound(true);
           }
         })
-        .finally(() => {
-          setIsFirstLoad(false);
-        });
+        .finally(() => {});
     }
   }, [actualAppId, filters]);
 

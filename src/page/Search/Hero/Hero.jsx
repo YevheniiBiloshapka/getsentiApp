@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import imgSearch from 'images/Search/imgSearch.png';
 import { Contain, Image, FormBox, Form } from './Hero.styled';
 import { TextField, Button, InputAdornment } from '@mui/material';
 import LinkIcon from '@mui/icons-material/Link';
 import { NavLink } from 'react-router-dom';
 import { fetchAppUrl } from 'api/Applications/Applications';
-import { useSearchParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectorToken } from 'api/redux/auth/auth-selector';
 
@@ -20,8 +19,6 @@ const urlSchema = string()
   }, 'Invalid URL');
 
 const Hero = ({ setOpenModal, idSetter }) => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [searchValue, setSearchValue] = useState(null);
   const isToken = useSelector(selectorToken);
 
   const {
@@ -40,7 +37,8 @@ const Hero = ({ setOpenModal, idSetter }) => {
     };
     console.log('fetch_app_url', body);
     fetchAppUrl(body).then(res => {
-      setSearchParams({ id: res.id });
+      const searchParams = new URLSearchParams();
+      searchParams.set('id', res.id);
       idSetter(res.id);
       setOpenModal(res.is_new);
     });
