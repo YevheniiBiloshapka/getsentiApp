@@ -1,7 +1,5 @@
 import React from 'react';
 import { Container, ChartBox, Box } from './Analysis.styled';
-import CircularProgressbar from 'components/CircularProgressbar/CircularProgressbar';
-import SentimentBreakdown from 'components/SentimentBreakdown/SentimentBreakdown';
 import Plot from 'react-plotly.js';
 
 const Analysis = ({ overallSentiment, sentimentBreakdown }) => {

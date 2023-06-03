@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Container, ChartBox, Title } from './RatingsOverTime.styled';
-import RatingOverLineChart from 'components/RatingOverLineChart/RatingOverLineChart';
 import { Select, MenuItem } from '@mui/material';
 import Plot from 'react-plotly.js';
 

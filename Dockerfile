@@ -1,13 +1,11 @@
-# Start from the Node.js 14 base image
-FROM node:20-alpine
+FROM node:20-alpine as build
 
-# Set working directory
 WORKDIR /app
 
-# Install dependencies
-COPY package*.json .
-RUN npm install
+COPY package*.json ./
 
-# Copy the rest of the project
+RUN npm ci
+
 COPY . .
 
+RUN npm run build
