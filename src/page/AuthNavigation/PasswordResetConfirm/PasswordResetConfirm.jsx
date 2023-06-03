@@ -73,7 +73,7 @@ const PasswordResetConfirm = () => {
   };
 
   const handleLogin = () => {
-    navigate('/auth/login'); // Redirect to the login page
+    navigate('/auth/login');
   };
 
   return (

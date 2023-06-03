@@ -13,13 +13,13 @@ const AppInfoDetailed = ({ appId }) => {
   const [searchParams] = useSearchParams();
   const idFromQuery = searchParams.get('id');
 
+  console.log('new log');
   // Use appId prop if it's not null or undefined, otherwise use id from the query params
   const actualAppId = appId ?? idFromQuery;
   console.log('in details', appId);
   const [appName, setAppName] = useState(null);
   const [analyticsData, setAnalyticsData] = useState(null);
   const [filters, setFilters] = useState({});
-
   const [isFirstLoad, setIsFirstLoad] = useState(true);
   const [dataNotFound, setDataNotFound] = useState(false);
 
