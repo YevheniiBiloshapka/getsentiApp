@@ -11,6 +11,7 @@ const AppInfoDetailed = ({ appId }) => {
   const [searchParams] = useSearchParams();
   const idFromQuery = searchParams.get('id');
 
+  console.log('new log');
   // Use appId prop if it's not null or undefined, otherwise use id from the query params
   const actualAppId = appId ?? idFromQuery;
   console.log('in details', appId);
