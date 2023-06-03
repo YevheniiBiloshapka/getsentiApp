@@ -1,23 +1,29 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from 'api/redux/auth/auth-operation';
-import { Avatar, Button, TextField, Link, Box, Grid, Snackbar } from '@mui/material';
-import MuiAlert from '@mui/material/Alert';
+import { useNavigate } from 'react-router-dom';
+import { object, string, TypeOf } from 'zod';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 
+import { Avatar, Button, TextField, Link, Box, Grid, Snackbar, MuiAlert } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
 
 const defaultTheme = createTheme();
+
+const loginSchema = object({
+  email: string().nonempty('Enter your email address').email('Email is invalid'),
+  password: string().nonempty('Enter password'),
+});
 
 const LoginIn = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const auth = useSelector(state => state.auth);
   const [open, setOpen] = useState(false);
+
   useEffect(() => {
     if (auth.loggedIn) {
       setOpen(true);
@@ -25,18 +31,20 @@ const LoginIn = () => {
     }
   }, [auth.loggedIn, navigate]);
 
-  const handleSubmit = async event => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const userData = {
-      email: data.get('email'),
-      password: data.get('password'),
-    };
-    dispatch(login(userData));
-  };
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(loginSchema),
+  });
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const onSubmit = data => {
+    dispatch(login(data));
   };
 
   return (
@@ -60,7 +68,7 @@ const LoginIn = () => {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+        <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)} sx={{ mt: 1 }}>
           <TextField
             margin="normal"
             required
@@ -70,6 +78,9 @@ const LoginIn = () => {
             name="email"
             autoComplete="email"
             autoFocus
+            {...register('email')}
+            error={Boolean(errors?.email)}
+            helperText={errors?.email?.message}
           />
           <TextField
             margin="normal"
@@ -80,6 +91,9 @@ const LoginIn = () => {
             type="password"
             id="password"
             autoComplete="current-password"
+            {...register('password')}
+            error={Boolean(errors?.password)}
+            helperText={errors?.password?.message}
           />
 
           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
