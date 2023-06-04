@@ -54,7 +54,7 @@ const LoginIn = () => {
   const onSubmit = data => {
     dispatch(login(data));
   };
-  console.log('open value', open);
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <Box

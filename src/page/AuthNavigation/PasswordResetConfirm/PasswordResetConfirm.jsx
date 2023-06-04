@@ -76,8 +76,7 @@ const PasswordResetConfirm = () => {
           </Box>
         </DialogTitle>
         <DialogContent>
-          <Typography>Your password has been successfully reset.</Typography>
-          <Typography sx={{ mb: 3 }}>Please enter your new password and confirm it.</Typography>
+          <Typography sx={{ mb: 3 }}>To reset your password please enter a new password and confirm it.</Typography>
           <Box
             component="form"
             onSubmit={handleSubmit(handleFormSubmit)}

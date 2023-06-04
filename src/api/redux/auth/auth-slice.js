@@ -22,7 +22,6 @@ const authSlice = createSlice({
       state.token = token;
     },
     [login.rejected]: (state, { payload }) => {
-      console.log(payload);
       state.isLoading = false;
       state.isLoggedIn = false;
       state.error = payload;
@@ -34,6 +33,7 @@ const authSlice = createSlice({
     [logout.fulfilled]: state => {
       state.token = null;
       state.isLoading = false;
+      state.isLoggedIn = false;
     },
     [logout.rejected]: (state, { payload }) => {
       state.isLoading = false;
