@@ -17,19 +17,40 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { passwordReset } from 'api/AuthenticationAPI';
 import { useNavigate } from 'react-router-dom';
 
+import { object, string } from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+
 const defaultTheme = createTheme();
+
+const emailSchema = object({
+  email: string().email('Email is invalid').nonempty('Enter your email address'),
+});
 
 const Forgot = () => {
   const navigate = useNavigate();
   const [openDialogSuccess, setOpenDialogSuccess] = useState(false);
   const [openDialogError, setOpenDialogError] = useState(false);
 
-  const handleSubmit = event => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const email = data.get('email');
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(emailSchema),
+  });
+
+  const handleCloseDialogSuccess = () => {
+    setOpenDialogSuccess(false);
+  };
+
+  const handleCloseDialogError = () => {
+    setOpenDialogError(false);
+  };
+
+  const onSubmit = async data => {
     const body = {
-      email: email,
+      email: data.email,
     };
 
     passwordReset(body)
@@ -41,14 +62,6 @@ const Forgot = () => {
         console.log(error.response.data.email);
         setOpenDialogError(true);
       });
-  };
-
-  const handleCloseDialogSuccess = () => {
-    setOpenDialogSuccess(false);
-  };
-
-  const handleCloseDialogError = () => {
-    setOpenDialogError(false);
   };
 
   return (
@@ -73,7 +86,7 @@ const Forgot = () => {
         <Typography component="h1" variant="h5">
           Forgot password
         </Typography>
-        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+        <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)} sx={{ mt: 1 }}>
           <TextField
             margin="normal"
             required
@@ -83,6 +96,9 @@ const Forgot = () => {
             name="email"
             autoComplete="email"
             autoFocus
+            {...register('email')}
+            error={Boolean(errors?.email)}
+            helperText={errors?.email?.message}
           />
 
           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>

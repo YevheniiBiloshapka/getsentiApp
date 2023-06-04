@@ -13,67 +13,57 @@ import {
 import { passwordResetConfirm } from 'api/AuthenticationAPI';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 
+import { object, string } from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+const schema = object({
+  new_password: string()
+    .nonempty('enter password')
+    .min(8, 'Password must contain at least 8 characters'),
+  new_password_confirm: string()
+    .nonempty('Confirm the password')
+    .min(8, 'Password must contain at least 8 characters'),
+}).refine(data => data.new_password === data.new_password_confirm, {
+  path: ['new_password_confirm'],
+  message: 'Password mismatch',
+});
+
 const PasswordResetConfirm = () => {
   const navigate = useNavigate();
   const { token, uid } = useParams();
   const [openDialog, setOpenDialog] = useState(true);
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const passwordError = '';
-  const [formError, setFormError] = useState('');
+
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(schema),
+  });
 
   const handleDialogClose = () => {
     setOpenDialog(false);
     navigate('/auth/login');
   };
 
-  const handlePasswordChange = event => {
-    setNewPassword(event.target.value);
-  };
-
-  const handleConfirmPasswordChange = event => {
-    setConfirmPassword(event.target.value);
-  };
-
-  const validateForm = () => {
-    if (newPassword === '') {
-      setFormError('Please enter a new password.');
-      return false;
-    }
-
-    if (newPassword !== confirmPassword) {
-      setFormError('Passwords do not match.');
-      return false;
-    }
-
-    return true;
-  };
-
-  const handleFormSubmit = () => {
-    if (validateForm()) {
-      const body = {
-        uid: uid,
-        token: token,
-        new_password: newPassword,
-        new_password_confirm: confirmPassword,
-      };
-      passwordResetConfirm(body)
-        .then(res => {
-          setOpenDialog(true);
-          navigate('/auth/login');
-        })
-        .catch(error => {
-          if (error.response.data.token) {
-            setFormError(error.response.data.token);
-          } else if (error.response.data.uid) {
-            setFormError(error.response.data.uid);
-          }
-        });
-    }
+  const handleFormSubmit = data => {
+    const body = {
+      uid: uid,
+      token: token,
+      new_password: data.new_password,
+      new_password_confirm: data.new_password_confirm,
+    };
+    passwordResetConfirm(body)
+      .then(res => {
+        setOpenDialog(true);
+        navigate('/auth/login');
+      })
+      .catch(error => {});
   };
 
   const handleLogin = () => {
-    navigate('/auth/login'); // Redirect to the login page
+    navigate('/auth/login');
   };
 
   return (
@@ -88,29 +78,33 @@ const PasswordResetConfirm = () => {
         <DialogContent>
           <Typography>Your password has been successfully reset.</Typography>
           <Typography sx={{ mb: 3 }}>Please enter your new password and confirm it.</Typography>
-          <TextField
-            label="New Password"
-            type="password"
-            value={newPassword}
-            onChange={handlePasswordChange}
-            error={passwordError !== ''}
-            helperText={passwordError}
-            sx={{ mr: 1 }}
-          />
-          <TextField
-            label="Confirm Password"
-            type="password"
-            value={confirmPassword}
-            onChange={handleConfirmPasswordChange}
-            error={passwordError !== ''}
-            helperText={passwordError}
-          />
-          {formError && <Typography color="error">{formError}</Typography>}
+          <Box
+            component="form"
+            onSubmit={handleSubmit(handleFormSubmit)}
+            sx={{ display: 'flex', flexDirection: 'column', gap: '10px' }}
+          >
+            <TextField
+              label="New Password"
+              type="password"
+              {...register('new_password')}
+              error={!!errors.new_password}
+              helperText={errors.new_password?.message}
+              sx={{ mb: 2, maxWidth: '600px', minWidth: '430px', width: '100%' }}
+            />
+            <TextField
+              label="Confirm Password"
+              type="password"
+              {...register('new_password_confirm')}
+              error={!!errors.new_password_confirm}
+              helperText={errors.new_password_confirm?.message}
+              sx={{ maxWidth: '600px', minWidth: '430px', width: '100%' }}
+            />
+            <DialogActions>
+              <Button type="submit">Submit</Button>
+              <Button onClick={handleLogin}>Cancel</Button>
+            </DialogActions>
+          </Box>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleFormSubmit}>Submit</Button>
-          <Button onClick={handleLogin}>Cancel</Button>
-        </DialogActions>
       </Dialog>
     </div>
   );

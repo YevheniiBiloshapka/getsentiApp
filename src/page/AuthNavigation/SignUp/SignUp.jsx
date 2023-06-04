@@ -18,6 +18,23 @@ import { registerUser } from 'api/AuthenticationAPI';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { object, string } from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+const schema = object({
+  email: string().nonempty('Enter your email address').email('Email is invalid'),
+  password: string()
+    .nonempty('enter password')
+    .min(8, 'Password must contain at least 8 characters'),
+  password_confirm: string()
+    .nonempty('Confirm the password')
+    .min(8, 'Password must contain at least 8 characters'),
+}).refine(data => data.password === data.password_confirm, {
+  path: ['password_confirm'],
+  message: 'Password mismatch',
+});
+
 const defaultTheme = createTheme();
 
 const SignUp = () => {
@@ -25,6 +42,13 @@ const SignUp = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [message, setMessage] = useState('');
   const [severity, setSeverity] = useState('success');
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(schema),
+  });
 
   const handleDialogClose = () => {
     setOpenDialog(false);
@@ -33,16 +57,8 @@ const SignUp = () => {
     }
   };
 
-  const handleSubmit = async event => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const userData = {
-      email: data.get('email'),
-      password: data.get('password'),
-      password_confirm: data.get('password_confirm'),
-    };
-
-    registerUser(userData)
+  const onSubmit = async data => {
+    registerUser(data)
       .then(res => {
         setMessage('An email has been sent to your inbox. Please check your email.');
         setSeverity('success');
@@ -76,7 +92,7 @@ const SignUp = () => {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+        <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
@@ -86,6 +102,9 @@ const SignUp = () => {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                {...register('email')}
+                error={!!errors.email}
+                helperText={errors.email?.message}
               />
             </Grid>
             <Grid item xs={12}>
@@ -97,6 +116,9 @@ const SignUp = () => {
                 type="password"
                 id="password"
                 autoComplete="new-password"
+                {...register('password')}
+                error={!!errors.password}
+                helperText={errors.password?.message}
               />
             </Grid>
             <Grid item xs={12}>
@@ -108,6 +130,9 @@ const SignUp = () => {
                 type="password"
                 id="password_confirm"
                 autoComplete="password_confirm"
+                {...register('password_confirm')}
+                error={!!errors.password_confirm}
+                helperText={errors.password_confirm?.message}
               />
             </Grid>
           </Grid>

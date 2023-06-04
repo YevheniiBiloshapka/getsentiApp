@@ -5,16 +5,25 @@ import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { store, persistor } from 'api/redux/store';
 import { PersistGate } from 'redux-persist/integration/react';
+import { SnackbarProvider } from 'notistack';
 
 import './index.css';
 
-console.log('render dom');
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <Provider store={store}>
       <PersistGate persistor={persistor}>
         <BrowserRouter basename="/">
-          <App />
+          <SnackbarProvider
+            maxSnack={5}
+            autoHideDuration={3000}
+            anchorOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+          >
+            <App />
+          </SnackbarProvider>
         </BrowserRouter>
       </PersistGate>
     </Provider>
