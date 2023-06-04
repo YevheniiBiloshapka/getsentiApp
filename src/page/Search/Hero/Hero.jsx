@@ -26,9 +26,10 @@ const Hero = ({ setOpenModal, idSetter }) => {
     const fetchAppUrl = async () => {
       try {
         const response = await axios.post('/api/applications/app-url/', body);
-        setSearchParams({ id: response.id });
-        idSetter(response.id);
-        setOpenModal(response.is_new);
+        const data = response.data;
+        setSearchParams({ id: data.id });
+        idSetter(data.id);
+        setOpenModal(data.is_new);
       } catch (error) {
         setUrlFormErrors(error.response.data);
       }
