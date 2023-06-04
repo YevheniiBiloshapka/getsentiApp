@@ -15,6 +15,8 @@ const AppInfoDetailed = ({ appId }) => {
 
   // Use appId prop if it's not null or undefined, otherwise use id from the query params
   const actualAppId = appId ?? idFromQuery;
+  console.log('in application', actualAppId)
+
   const [appName, setAppName] = useState(null);
   const [analyticsData, setAnalyticsData] = useState(null);
   const [filters, setFilters] = useState({});

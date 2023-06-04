@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { REACT_APP_SERVER_URL } from '../../config';
 
 axios.defaults.baseURL = REACT_APP_SERVER_URL;
@@ -20,7 +20,8 @@ export const login = createAsyncThunk('auth/login', async (body, { rejectWithVal
 
     return data;
   } catch (error) {
-    return rejectWithValue(error.response.data.message);
+    console.log('login error', error);
+    return rejectWithValue(error.response.data);
   }
 });
 

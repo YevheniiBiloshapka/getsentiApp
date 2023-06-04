@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import imgSearch from 'images/Search/imgSearch.png';
 import { Contain, Image, FormBox, Form } from './Hero.styled';
 import { TextField, Button, InputAdornment } from '@mui/material';
@@ -7,88 +7,89 @@ import { NavLink } from 'react-router-dom';
 import { fetchAppUrl } from 'api/Applications/Applications';
 import { useSelector } from 'react-redux';
 import { selectorToken } from 'api/redux/auth/auth-selector';
+import { useSearchParams } from 'react-router-dom';
+import axios from 'axios';
 
-import { string } from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-
-const urlSchema = string()
-  .url('Please enter a valid URL.')
-  .refine(value => {
-    return true;
-  }, 'Invalid URL');
 
 const Hero = ({ setOpenModal, idSetter }) => {
   const isToken = useSelector(selectorToken);
+  const [_, setSearchParams] = useSearchParams();
+  const [urlFormErrors, setUrlFormErrors] = useState();
 
-  const {
-    handleSubmit,
-    register,
-    formState: { errors },
-  } = useForm({
-    resolver: zodResolver(urlSchema),
-  });
 
   const handleClickSubmit = event => {
     event.preventDefault();
+
     const data = new FormData(event.currentTarget);
-    const body = {
-      url: data.get('url'),
+    const body = { url: data.get('url') };
+
+    const fetchAppUrl = async () => {
+      try {
+        const response = await axios.post('/api/applications/app-url/', body);
+        setSearchParams({ id: response.id });
+        idSetter(response.id);
+        setOpenModal(response.is_new);
+      } catch (error) {
+        setUrlFormErrors(error.response.data);
+      }
     };
-    console.log('fetch_app_url', body);
-    fetchAppUrl(body).then(res => {
-      const searchParams = new URLSearchParams();
-      searchParams.set('id', res.id);
-      idSetter(res.id);
-      setOpenModal(res.is_new);
-    });
+    fetchAppUrl();
   };
 
+  const handleInputChange = () => {
+    setUrlFormErrors(null); // clear errors when the user types something
+  };
+  console.log(urlFormErrors);
   return (
     <Contain>
-      <Image src={imgSearch} alt="cover search" width="600px" heigth="600px" />
+      <Image src={imgSearch} alt='cover search' width='600px' heigth='600px' />
       <FormBox>
         <h1>
           Analyse App <br />
           Reviews & Ratings
         </h1>
 
-        <Form onSubmit={handleSubmit(handleClickSubmit)}>
+        <Form onSubmit={handleClickSubmit}>
           <TextField
-            margin="normal"
+            error={!!urlFormErrors}
+            helperText={urlFormErrors && urlFormErrors.url ? urlFormErrors.url[0] : null}
+            margin='normal'
             fullWidth
-            name="url"
-            label="Enter the URL here"
-            type="url"
-            id="url"
-            {...register('url')}
-            error={Boolean(errors?.url)}
-            helperText={errors?.url?.message}
+            name='url'
+            label='Enter the URL here'
+            type='url'
+            id='url'
+            onChange={handleInputChange}
             InputProps={{
               startAdornment: (
-                <InputAdornment position="start">
+                <InputAdornment position='start'>
                   <LinkIcon />
                 </InputAdornment>
               ),
             }}
+            sx={{
+              '& .MuiFormHelperText-root': {
+                fontSize: '0.8rem',  // specify the font size you want
+              },
+            }}
           />
-
           {isToken ? (
-            <Button type="submit" variant="contained" sx={{ mt: 2, mb: 1 }}>
+            <Button type='submit' variant='contained' sx={{ mt: 2, mb: 1 }}>
               analyse
             </Button>
           ) : (
             <Button
-              type="submit"
+              type='submit'
               to={'/login'}
               component={NavLink}
-              variant="contained"
+              variant='contained'
               sx={{ mt: 2, mb: 1 }}
             >
               analyse
             </Button>
           )}
         </Form>
+
         <p>Senti saves teams hours every week with powerful integrations and automations.</p>
       </FormBox>
     </Contain>

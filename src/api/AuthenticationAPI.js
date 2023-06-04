@@ -3,14 +3,7 @@ import { REACT_APP_SERVER_URL } from './config';
 
 const baseUrl = REACT_APP_SERVER_URL;
 
-export const registerUser = async userData => {
-  try {
-    const response = await axios.post(`${baseUrl}/api/authentication/signup/`, userData);
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
-};
+
 
 export const emailConfirm = async body => {
   try {
@@ -21,6 +14,7 @@ export const emailConfirm = async body => {
     throw new Error(error);
   }
 };
+
 export const passwordReset = async body => {
   try {
     const response = await axios.post(`/api/authentication/password-reset/`, body);
@@ -30,6 +24,7 @@ export const passwordReset = async body => {
     throw new Error(error);
   }
 };
+
 export const passwordResetConfirm = async body => {
   try {
     const response = await axios.post(`/api/authentication/password-reset-confirm/`, body);
@@ -39,6 +34,7 @@ export const passwordResetConfirm = async body => {
     throw new Error(error);
   }
 };
+
 export const changePassword = async body => {
   try {
     const response = await axios.post(`/api/authentication/password-change/`, body);

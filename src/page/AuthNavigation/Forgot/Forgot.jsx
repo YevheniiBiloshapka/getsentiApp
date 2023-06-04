@@ -9,28 +9,31 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogActions,
+  DialogActions, Snackbar,
 } from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { passwordReset } from 'api/AuthenticationAPI';
 import { useNavigate } from 'react-router-dom';
 
 import { object, string } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import axios from 'axios';
+import { REACT_APP_SERVER_URL } from 'api/config';
+import MuiAlert from '@mui/material/Alert';
 
 const defaultTheme = createTheme();
 
 const emailSchema = object({
-  email: string().email('Email is invalid').nonempty('Enter your email address'),
+  email: string().nonempty('This field is required.').email('Please enter a valid email address.'),
 });
 
 const Forgot = () => {
   const navigate = useNavigate();
+
   const [openDialogSuccess, setOpenDialogSuccess] = useState(false);
-  const [openDialogError, setOpenDialogError] = useState(false);
+  const [resetFormErrors, setResetFormErrors] = useState(null);
 
   const {
     handleSubmit,
@@ -42,10 +45,7 @@ const Forgot = () => {
 
   const handleCloseDialogSuccess = () => {
     setOpenDialogSuccess(false);
-  };
-
-  const handleCloseDialogError = () => {
-    setOpenDialogError(false);
+    navigate('/auth/login');
   };
 
   const onSubmit = async data => {
@@ -53,16 +53,20 @@ const Forgot = () => {
       email: data.email,
     };
 
-    passwordReset(body)
-      .then(res => {
+    const passwordReset = async body => {
+      try {
+        await axios.post(`${REACT_APP_SERVER_URL}/api/authentication/password-reset/`, body);
         setOpenDialogSuccess(true);
-        navigate('/auth/login');
-      })
-      .catch(error => {
-        console.log(error.response.data.email);
-        setOpenDialogError(true);
-      });
+
+      } catch (error) {
+        setResetFormErrors(error.response.data);
+      }
+    };
+
+    passwordReset(body)
   };
+
+  console.log('openDialogSuccess', openDialogSuccess);
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -83,31 +87,32 @@ const Forgot = () => {
         <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
           <LockOutlinedIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">
+        <Typography component='h1' variant='h5'>
           Forgot password
         </Typography>
-        <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)} sx={{ mt: 1 }}>
+        <Box component='form' noValidate onSubmit={handleSubmit(onSubmit)} sx={{ mt: 1 }}>
           <TextField
-            margin="normal"
+            margin='normal'
             required
             fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
+            id='email'
+            label='Email Address'
+            name='email'
+            autoComplete='email'
             autoFocus
             {...register('email')}
-            error={Boolean(errors?.email)}
-            helperText={errors?.email?.message}
+                onChange={() => setResetFormErrors(null)}
+            error={Boolean(errors?.email) || !!resetFormErrors}
+            helperText={errors?.email?.message || (resetFormErrors && resetFormErrors.email ? resetFormErrors.email[0] : null)}
           />
 
-          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-            Sign In
+          <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
+            Send password reset email
           </Button>
           <Grid container>
             <Grid item>
-              <Link href="login" variant="body2">
-                {"Don't have an account? Sign Up"}
+              <Link href='signup' variant='body2'>
+                {'Don\'t have an account? Sign Up'}
               </Link>
             </Grid>
           </Grid>
@@ -124,16 +129,6 @@ const Forgot = () => {
           </DialogContent>
           <DialogActions>
             <Button onClick={handleCloseDialogSuccess}>OK</Button>
-          </DialogActions>
-        </Dialog>
-
-        <Dialog open={openDialogError} keepMounted onClose={handleCloseDialogError}>
-          <DialogTitle>Error</DialogTitle>
-          <DialogContent>
-            <Typography>Failed to reset password. Please try again.</Typography>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseDialogError}>OK</Button>
           </DialogActions>
         </Dialog>
       </Box>

@@ -8,13 +8,14 @@ export async function fetchAppUrl(body) {
     const response = await axios.post(`/api/applications/app-url/`, body);
     return response.data;
   } catch (error) {
-    return console.error(error);
+    return error.response;
   }
 }
 
 export async function fetchApplication(params) {
+  console.log('fetchApplication call', axios.defaults.headers.common['Authorization']);
   try {
-    return await axios.get(`/api/applications/${params}`);;
+    return await axios.get(`/api/applications/${params}`);
   } catch (error) {
     console.error(error);
     return error.response; // return error response to handle it later
@@ -22,8 +23,10 @@ export async function fetchApplication(params) {
 }
 
 export async function fetchAnalytics(id, params) {
+    console.log('fetchAnalytics call', axios.defaults.headers.common['Authorization']);
+
   try {
-    return await axios.get(`/api/applications/${id}/analytics/`, {params: params});;
+    return await axios.get(`/api/applications/${id}/analytics/`, {params: params});
   } catch (error) {
     console.error(error);
     return error.response; // return error response to handle it later

@@ -15,22 +15,29 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 const defaultTheme = createTheme();
 
 const loginSchema = object({
-  email: string().nonempty('Enter your email address').email('Email is invalid'),
-  password: string().nonempty('Enter password'),
+  email: string().nonempty('This field is required.').email('Please enter a valid email address.'),
+  password: string().nonempty('This field is required.'),
 });
 
 const LoginIn = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const auth = useSelector(state => state.auth);
+
   const [open, setOpen] = useState(false);
 
+
   useEffect(() => {
-    if (auth.loggedIn) {
+    if (auth.isLoggedIn) {
       setOpen(true);
       navigate('/');
     }
-  }, [auth.loggedIn, navigate]);
+
+    if (auth.error) {
+      setOpen(true);
+    }
+  }, [auth.isLoggedIn, navigate, auth.error]);
 
   const {
     handleSubmit,
@@ -47,7 +54,7 @@ const LoginIn = () => {
   const onSubmit = data => {
     dispatch(login(data));
   };
-
+  console.log('open value', open);
   return (
     <ThemeProvider theme={defaultTheme}>
       <Box
@@ -66,59 +73,59 @@ const LoginIn = () => {
         <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
           <LockOutlinedIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">
+        <Typography component='h1' variant='h5'>
           Sign in
         </Typography>
-        <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)} sx={{ mt: 1 }}>
+        <Box component='form' noValidate onSubmit={handleSubmit(onSubmit)} sx={{ mt: 1 }}>
           <TextField
-            margin="normal"
+            margin='normal'
             required
             fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
+            id='email'
+            label='Email Address'
+            name='email'
+            autoComplete='email'
             autoFocus
             {...register('email')}
             error={Boolean(errors?.email)}
             helperText={errors?.email?.message}
           />
           <TextField
-            margin="normal"
+            margin='normal'
             required
             fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
+            name='password'
+            label='Password'
+            type='password'
+            id='password'
+            autoComplete='current-password'
             {...register('password')}
             error={Boolean(errors?.password)}
             helperText={errors?.password?.message}
           />
 
-          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+          <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
             Sign In
           </Button>
           <Grid container>
             <Grid item xs>
-              <Link href="password-reset" variant="body2">
+              <Link href='password-reset' variant='body2'>
                 Forgot password?
               </Link>
             </Grid>
             <Grid item xs>
-              <Link href="signup" variant="body2">
-                {"Don't have an account? Sign Up"}
+              <Link href='signup' variant='body2'>
+                {'Don\'t have an account? Sign Up'}
               </Link>
             </Grid>
           </Grid>
         </Box>
-        <Snackbar open={open} autoHideDuration={4000} onClose={handleClose}>
-          <MuiAlert onClose={handleClose} severity="success">
-            Logged in successfully!
-          </MuiAlert>
-        </Snackbar>
       </Box>
+      <Snackbar open={open} autoHideDuration={4000} onClose={handleClose}   anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
+        <MuiAlert onClose={handleClose} severity="error">
+          {auth.error?.non_field_errors}
+        </MuiAlert>
+      </Snackbar>
     </ThemeProvider>
   );
 };

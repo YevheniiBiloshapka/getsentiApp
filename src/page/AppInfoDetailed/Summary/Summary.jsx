@@ -26,7 +26,7 @@ const Summary = ({ totalReviews, overallSentimentNum, averageStars, starsBreakdo
           <Rating name="simple-controlled" readOnly value={averageStars} />
         </Average>
         <Graphic>
-           <h3 style={{ 'margin-bottom': '0', 'margin-top': '0' }}>Stars breakdown</h3>
+           <h3 style={{ 'marginBottom': '0', 'marginTop': '0' }}>Stars breakdown</h3>
           {starsBreakdown && <Plot
             data={starsBreakdown.data}
             layout={starsBreakdown.layout}
