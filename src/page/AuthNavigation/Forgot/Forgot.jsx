@@ -20,8 +20,9 @@ import { object, string } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
-import { REACT_APP_SERVER_URL } from 'api/config';
-import MuiAlert from '@mui/material/Alert';
+import { REACT_APP_SERVER_BASE_URL } from 'api/config';
+
+axios.defaults.baseURL = REACT_APP_SERVER_BASE_URL;
 
 const defaultTheme = createTheme();
 
@@ -55,7 +56,7 @@ const Forgot = () => {
 
     const passwordReset = async body => {
       try {
-        await axios.post(`${REACT_APP_SERVER_URL}/api/authentication/password-reset/`, body);
+        await axios.post(`/api/authentication/password-reset/`, body);
         setOpenDialogSuccess(true);
 
       } catch (error) {

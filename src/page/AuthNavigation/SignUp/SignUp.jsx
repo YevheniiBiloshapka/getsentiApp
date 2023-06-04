@@ -22,7 +22,9 @@ import { object, string } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
-import { REACT_APP_SERVER_URL } from 'api/config';
+import { REACT_APP_SERVER_BASE_URL } from 'api/config';
+
+axios.defaults.baseURL = REACT_APP_SERVER_BASE_URL;
 
 
 // TODO: make 'This field is required.' a constant
@@ -63,7 +65,7 @@ const SignUp = () => {
   const onSubmit = async data => {
     const registerUser = async userData => {
       try {
-        await axios.post(`${REACT_APP_SERVER_URL}/api/authentication/signup/`, userData);
+        await axios.post(`/api/authentication/signup/`, userData);
         setOpenDialog(true);
       } catch (error) {
         setFormErrors(error.response.data);

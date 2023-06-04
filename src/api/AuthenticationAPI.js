@@ -1,13 +1,12 @@
 import axios from 'axios';
-import { REACT_APP_SERVER_URL } from './config';
+import { REACT_APP_SERVER_BASE_URL } from './config';
 
-const baseUrl = REACT_APP_SERVER_URL;
-
+axios.defaults.baseURL = REACT_APP_SERVER_BASE_URL;
 
 
 export const emailConfirm = async body => {
   try {
-    const response = await axios.post(`${baseUrl}/api/authentication/email-confirm/`, body);
+    const response = await axios.post(`/api/authentication/email-confirm/`, body);
     return response.data;
   } catch (error) {
     console.log(error);

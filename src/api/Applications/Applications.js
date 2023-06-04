@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { REACT_APP_SERVER_URL } from '../config';
+import { REACT_APP_SERVER_BASE_URL } from '../config';
 
-axios.defaults.baseURL = REACT_APP_SERVER_URL;
+axios.defaults.baseURL = REACT_APP_SERVER_BASE_URL;
 
 export async function fetchAppUrl(body) {
   try {
