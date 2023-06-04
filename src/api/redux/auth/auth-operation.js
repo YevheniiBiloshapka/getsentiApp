@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {createAsyncThunk } from '@reduxjs/toolkit';
 import { REACT_APP_SERVER_BASE_URL } from '../../config';
-import {token} from 'api/utils';
+import { buildAuthenticationHeader, token } from 'api/utils';
 
 axios.defaults.baseURL = REACT_APP_SERVER_BASE_URL;
 
@@ -20,7 +20,11 @@ export const login = createAsyncThunk('auth/login', async (body, { rejectWithVal
 
 export const logout = createAsyncThunk('auth/logout', async (_, { rejectWithValue }) => {
   try {
-    await axios.get('/api/authentication/logout/');
+    await axios.get('/api/authentication/logout/', {
+      headers: {
+        ...buildAuthenticationHeader()
+      }
+    });
 
     token.unset();
     return null;
