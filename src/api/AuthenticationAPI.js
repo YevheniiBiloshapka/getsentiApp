@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { REACT_APP_SERVER_BASE_URL } from './config';
-
+import { REACT_APP_SERVER_BASE_URL } from 'api/config';
+import { buildAuthenticationHeader } from 'api/utils';
 axios.defaults.baseURL = REACT_APP_SERVER_BASE_URL;
 
 
@@ -36,7 +36,11 @@ export const passwordResetConfirm = async body => {
 
 export const changePassword = async body => {
   try {
-    const response = await axios.post(`/api/authentication/password-change/`, body);
+    const response = await axios.post(`/api/authentication/password-change/`, body, {
+       headers: {
+        ...buildAuthenticationHeader(),
+      },
+    });
     return response.data;
   } catch (error) {
     console.log(error);

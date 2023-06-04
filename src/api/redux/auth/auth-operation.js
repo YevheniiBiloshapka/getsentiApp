@@ -1,17 +1,10 @@
 import axios from 'axios';
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import {createAsyncThunk } from '@reduxjs/toolkit';
 import { REACT_APP_SERVER_BASE_URL } from '../../config';
+import {token} from 'api/utils';
 
 axios.defaults.baseURL = REACT_APP_SERVER_BASE_URL;
 
-const token = {
-  set: token => {
-    axios.defaults.headers.common['Authorization'] = `Token ${token}`;
-  },
-  unset: () => {
-    delete axios.defaults.headers.common['Authorization'];
-  },
-};
 
 export const login = createAsyncThunk('auth/login', async (body, { rejectWithValue }) => {
   try {

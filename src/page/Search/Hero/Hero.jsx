@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import { selectorToken } from 'api/redux/auth/auth-selector';
 import { useSearchParams } from 'react-router-dom';
 import axios from 'axios';
+import { buildAuthenticationHeader } from 'api/utils';
 
 
 const Hero = ({ setOpenModal, idSetter }) => {
@@ -25,7 +26,11 @@ const Hero = ({ setOpenModal, idSetter }) => {
 
     const fetchAppUrl = async () => {
       try {
-        const response = await axios.post('/api/applications/app-url/', body);
+        const response = await axios.post('/api/applications/app-url/', body, {
+          headers: {
+            ...buildAuthenticationHeader(),
+          },
+        });
         const data = response.data;
         setSearchParams({ id: data.id });
         idSetter(data.id);
