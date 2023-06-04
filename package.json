@@ -5,24 +5,28 @@
   "dependencies": {
     "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.11.0",
+    "@hookform/resolvers": "^3.1.0",
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.13.1",
     "@reduxjs/toolkit": "^1.9.5",
     "axios": "^1.4.0",
+    "notistack": "^3.0.1",
     "plotly.js": "^2.23.2",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
+    "react-hook-form": "^7.44.3",
     "react-plotly.js": "^2.6.0",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.11.2",
     "react-scripts": "5.0.1",
     "redux-persist": "^6.0.0",
     "styled-components": "^4.4.1",
-    "typescript": "^4"
+    "typescript": "^4",
+    "zod": "^3.21.4"
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "node --max_old_space_size=2000 node_modules/react-scripts/scripts/build.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint:js": "eslint src/**/*.{js,jsx}"
